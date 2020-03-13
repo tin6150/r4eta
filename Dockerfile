@@ -13,7 +13,7 @@ MAINTAINER Tin (at) LBL.gov
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=PST8PDT 
- 
+
 #ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
@@ -23,7 +23,7 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     apt-get update ;\
     # ubuntu:
     apt-get --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen xterm ;\
-    apt-get --quiet install r-studio ;\
+    apt-get --quiet install rstudio ;\
     echo '==================================================================' ;\
     echo "git cloning the repo for reference/tracking" | tee -a _TOP_DIR_OF_CONTAINER_ ;\
     #apt-get -y --quiet install git  ;\
@@ -40,7 +40,10 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
+    echo ''
     # initialization1.R
+
+RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     Rscript --quiet -e 'install.packages("ggplot2",    repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("maps",    repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("dplyr",     repos = "http://cran.us.r-project.org")'    ;\
@@ -58,7 +61,14 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     Rscript --quiet -e 'install.packages("tmap",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("spdplyr",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("rgdal",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet -e 'library()'   | sort | tee R_library_list.out.1.txt  ;\
+    ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.1.txt   ;\
+    echo "Done installing packages cran packages - part 1" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
+    echo ""
+
     # initialization2.R
+RUN echo "installing packages cran packages - part 2" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
     Rscript --quiet -e 'install.packages("MASS",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("reshape2",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("cowplot",     repos = "http://cran.us.r-project.org")'    ;\
@@ -80,7 +90,14 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     Rscript --quiet -e 'install.packages("data.table",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("tigris",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("DAAG",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet -e 'library()'   | sort | tee R_library_list.out.2.txt  ;\
+    ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.2.txt   ;\
+    echo "Done installing packages cran packages - part 2" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
+    echo ""
+
     # initialization3.R
+RUN echo "installing packages cran packages - part 3" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
     Rscript --quiet -e 'install.packages("RSQLite",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("rgeos",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("gpclib",     repos = "http://cran.us.r-project.org")'    ;\
@@ -112,15 +129,16 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     Rscript --quiet -e 'install.packages("iterators",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("doSNOW",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("Hmisc",     repos = "http://cran.us.r-project.org")'    ;\
-		Rscript --quiet -e 'library()'   | sort | tee R_library_list.out.txt.singularity  ;\
-    ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out                   ;\
-    echo "Done installing packages cran packages" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
+    Rscript --quiet -e 'library()'   | sort | tee R_library_list.out.3.txt  ;\
+    ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.3.txt   ;\
+    echo "Done installing packages cran packages - part 3" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
     date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
+    echo ""
 
 RUN     cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  \
-  && echo  "Dockerfile 2020.0313 1400"  >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2020.0313 1522"  >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Grand Finale"
 
 #- ENV TZ America/Los_Angeles  
