@@ -26,11 +26,11 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     apt-get --quiet install r-studio ;\
     echo '==================================================================' ;\
     echo "git cloning the repo for reference/tracking" | tee -a _TOP_DIR_OF_CONTAINER_ ;\
-    apt-get -y --quiet install git  ;\
+    #apt-get -y --quiet install git  ;\
     test -d /opt/gitrepo  || mkdir -p /opt/gitrepo        ;\
     cd /opt/gitrepo       ;\
     test -d /opt/gitrepo/r4eta  || git clone https://github.com/tin6150/r4eta.git  ;\
-    cd /opt/gitrepo/r4eta &&  git pull && cd -             
+    cd /opt/gitrepo/r4eta &&  git pull && cd /            ;\
 
     echo '==================================================================' ;\
     echo '==================================================================' ;\
@@ -112,6 +112,10 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     Rscript --quiet -e 'install.packages("iterators",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("doSNOW",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("Hmisc",     repos = "http://cran.us.r-project.org")'    ;\
+		Rscript --quiet -e 'library()'   | sort | tee R_library_list.out.txt.singularity  ;\
+    ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out                   ;\
+    echo "Done installing packages cran packages" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
 
 RUN     cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
