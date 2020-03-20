@@ -135,10 +135,19 @@ RUN echo "installing packages cran packages - part 3" | tee -a _TOP_DIR_OF_CONTA
     date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
     echo ""
 
+    # from library() calls
+RUN echo "installing packages cran packages - part 4" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
+    Rscript --quiet -e 'install.packages(c("aCRM", "akima", "broom", "cluster", "clusterCrit", "corrplot", "DAAG", "DandEFA", "datamart", "data.table", "directlabels", "dismo", "dplyr", "factoextra", "FactoMineR", "fields", "fmsb", "gdata", "ggmap", "ggplot2", "ggthemes", "gpclib", "gridExtra", "Hmisc", "lubridate", "maps", "maptools", "ncdf", "ncdf4", "openair", "openxlsx", "plyr", "proj4", "psych", "psychTools", "raster", "RColorBrewer", "readxl", "reshape2", "rgdal", "rgeos", "rJava", "rstudioapi", "scales", "sf", "sp", "stargazer", "stringi", "stringr", "tibble", "tictoc", "tidyr", "tigris", "timeDate", "tmap", "units", "utils", "xlsx", "xtable", "zoo"),     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet -e 'library()'   | sort | tee R_library_list.out.4.txt  ;\
+    ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.4.txt   ;\
+    echo "Done installing packages cran packages - part 4" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
+    echo ""
+
 RUN     cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  \
-  && echo  "Dockerfile 2020.0313 1522"  >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2020.0320 1318"  >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Grand Finale"
 
 #- ENV TZ America/Los_Angeles  
