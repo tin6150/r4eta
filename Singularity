@@ -1,7 +1,26 @@
 Bootstrap: docker
 From: tin6150/r4eta
 
+# vim: nosmartindent tabstop=4 noexpandtab shiftwidth=4
+
 # Singularity def, wrap around docker tin6150/r4eta
+
+# manual build cmd (singularity 3.2): 
+# sudo SINGULARITY_TMPDIR=/global/scratch/tin/tmp singularity build --sandbox ./r4eta.sif Singularity 2>&1  | tee singularity_build.log
+# sudo SINGULARITY_TMPDIR=/dev/shm singularity build --sandbox ./r4eta.sif Singularity 2>&1  | tee singularity_build.log
+#
+# manual build cmd (singularity 2.6): 
+# sudo /opt/singularity-2.6/bin/singularity build --writable r4eta_b1219a.img Singularity 2>&1  | tee singularity_build.log
+#
+# eg run cmd on bofh w/ singularity 2.6.2:
+#      /opt/singularity-2.6/bin/singularity run     r4eta_b1219a.img
+# sudo /opt/singularity-2.6/bin/singularity exec -w r4eta_b1219a.img /bin/tcsh
+
+# eg run cmd on lrc, singularity 2.6-dist (maybe locally compiled)
+#      singularity shell -w -B /global/scratch/tin ./r4eta_b1219a.img
+#
+# dirac1 has singularity singularity-3.2.1-1.el7.x86_64 
+
 
 %post
 	touch "_ROOT_DIR_OF_CONTAINER_" ## also is "_CURRENT_DIR_CONTAINER_BUILD" 
@@ -36,36 +55,19 @@ From: tin6150/r4eta
 	REFERENCES = "https://github.com/tin6150/r4eta"
 
 %runscript
-    #TZ=PST8PDT /bin/tcsh
     #/bin/bash -i 
-    #xx source /etc/bashrc && /Downloads/CMAQ/CMAQ-4.5-ADJ-LAJB_tutorial/code/CMAQ-4.5-ADJ-LAJB/./built_gcc_gfortran_serial_SAPRC99ROS/bin/CCTM/cctm
-	#LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/conda/lib PATH=${PATH}:/opt/conda/bin /bin/bash -i
 	R
 
 	
 
 %help
 	R programming language env in a container, with many packages from CRAN
-    
-# Pull and run via singularity-hub:
-# singularity pull shub://tin6150/r4eta
-# singularity pull --name r4eta_b1219.sif shub://tin6150/r4eta
-# singularity shell r4eta.sif
+	Example run:
+	Pull and run via singularity-hub:
+	singularity pull --name myR shub://tin6150/r4eta
+	./myR
+	singularity exec myR /usr/bin/Rscript -e 'library()'
+	singularity exec --bind  .:/mnt  myR  /usr/bin/Rscript  /mnt/helloWorld.R > output.txt
+    Where helloWorld.R is in your current dir (on the host system)
+	See README.rst for additional details.
 
-# manual build cmd (singularity 3.2): 
-# sudo SINGULARITY_TMPDIR=/global/scratch/tin/tmp singularity build --sandbox ./r4eta.sif Singularity 2>&1  | tee singularity_build.log
-# sudo SINGULARITY_TMPDIR=/dev/shm singularity build --sandbox ./r4eta.sif Singularity 2>&1  | tee singularity_build.log
-#
-# manual build cmd (singularity 2.6): 
-# sudo /opt/singularity-2.6/bin/singularity build --writable r4eta_b1219a.img Singularity 2>&1  | tee singularity_build.log
-#
-# eg run cmd on bofh w/ singularity 2.6.2:
-#      /opt/singularity-2.6/bin/singularity run     r4eta_b1219a.img
-# sudo /opt/singularity-2.6/bin/singularity exec -w r4eta_b1219a.img /bin/tcsh
-
-# eg run cmd on lrc, singularity 2.6-dist (maybe locally compiled)
-#      singularity shell -w -B /global/scratch/tin ./r4eta_b1219a.img
-#
-# dirac1 has singularity singularity-3.2.1-1.el7.x86_64 
-
-# vim: nosmartindent tabstop=4 noexpandtab shiftwidth=4
