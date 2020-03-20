@@ -42,8 +42,6 @@ From: tin6150/r4eta
 	chown -R 43143 /Downloads
 	chmod 1777 /home/tmp
 
-	# this is in Dockerfile now
-	#Rscript --quiet -e 'library()' > R_library_list.out.txt.singularity 
     
 %environment
 	TZ=PST8PDT
@@ -70,4 +68,7 @@ From: tin6150/r4eta
 	singularity exec --bind  .:/mnt  myR  /usr/bin/Rscript  /mnt/helloWorld.R > output.txt
     Where helloWorld.R is in your current dir (on the host system)
 	See README.rst for additional details.
+	source:          https://github.com/tin6150/r4eta
+	docker hub:      https://hub.docker.com/repository/docker/tin6150/r4eta
+	singularity hub: https://singularity-hub.org/collections/4160
 
