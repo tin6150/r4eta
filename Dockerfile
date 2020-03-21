@@ -12,6 +12,7 @@ FROM r-base:3.6.3
 MAINTAINER Tin (at) LBL.gov
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG TERM=vt100
 ARG TZ=PST8PDT 
 
 #ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -23,9 +24,15 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     apt-get update ;\
     # ubuntu:
     apt-get -y --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen xterm ;\
-    apt-get -y --quiet install netcdf-bin libnetcdf-c++4 libnetcdf-c++4-1 libnetcdf-c++4-dev libnetcdf-dev cdftools nco ncview r-cran-ncdf4  units gdal-bin gdal-data libgdal-dev libgdal26  r-cran-rgdal  curl r-cran-rcurl libcurl4 libcurl4-openssl-dev libssl-dev r-cran-httr libgeos-dev r-cran-xml r-cran-xml2 libxml2 rio ;\
-    # rstudio dont seems to be in Debian bullseye/sid :/
-    apt-get --quiet install rstudio ;\
+    apt-get -y --quiet install netcdf-bin libnetcdf-c++4 libnetcdf-c++4-1 libnetcdf-c++4-dev libnetcdf-dev cdftools nco ncview r-cran-ncdf4  units gdal-bin gdal-data libgdal-dev libgdal26  r-cran-rgdal  curl r-cran-rcurl libcurl4 libcurl4-openssl-dev libssl-dev r-cran-httr libgeos-dev r-cran-xml r-cran-xml2 libxml2 rio  ;\ 
+    # debian calls it libnode-dev (ubuntu call it libv8-dev?)
+    apt-get -y --quiet install libnode-dev libv8-dev ;\
+    # rstudio dont seems to exist in Debian bullseye/sid :/
+    apt-get --quiet install rstudio r-cran-rstudioapi ;\
+    mkdir -p Downloads &&  cd Downloads ;\
+    wget --quiet https://download1.rstudio.org/desktop/trusty/amd64/rstudio-1.2.5033-amd64.deb  -O rsudio.deb ;\
+    apt-get -y --quiet install ./rsudio.deb     ;\
+    cd ..   ;\
     echo '==================================================================' ;\
     echo "git cloning the repo for reference/tracking" | tee -a _TOP_DIR_OF_CONTAINER_ ;\
     apt-get -y --quiet install git-all  ;\
