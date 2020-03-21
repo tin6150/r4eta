@@ -22,8 +22,8 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     echo "installing packages via apt"       | tee -a _TOP_DIR_OF_CONTAINER_  ;\
     apt-get update ;\
     # ubuntu:
-    apt-get --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen xterm ;\
-    apt-get --quiet install netcdf-bin libnetcdf-c++4 libnetcdf-c++4-1 libnetcdf-c++4-dev libnetcdf-dev cdftools nco ncview r-cran-ncdf4  units gdal-bin gdal-data libgdal-dev libgdal26  r-cran-rgdal  curl r-cran-rcurl libcurl4 libcurl4-openssl-dev libssl-dev r-cran-httr libgeos-dev r-cran-xml r-cran-xml2 libxml2 rio ;\
+    apt-get -y --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen xterm ;\
+    apt-get -y --quiet install netcdf-bin libnetcdf-c++4 libnetcdf-c++4-1 libnetcdf-c++4-dev libnetcdf-dev cdftools nco ncview r-cran-ncdf4  units gdal-bin gdal-data libgdal-dev libgdal26  r-cran-rgdal  curl r-cran-rcurl libcurl4 libcurl4-openssl-dev libssl-dev r-cran-httr libgeos-dev r-cran-xml r-cran-xml2 libxml2 rio ;\
     # rstudio dont seems to be in Debian bullseye/sid :/
     apt-get --quiet install rstudio ;\
     echo '==================================================================' ;\
@@ -47,24 +47,24 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     # initialization1.R
 
 RUN echo "installing packages cran packages - part 1" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
-    Rscript --quiet -e 'install.packages("ggplot2",    repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("maps",    repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("dplyr",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("sf",  repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("fields",  repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("Imap",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("raster",  repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("readxl",    repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("ncdf4",   repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("rgdal", repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("ggmap",   repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("lawn",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("sp",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("shapefiles",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("tmap",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("spdplyr",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("rgdal",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'library()'   | sort | tee R_library_list.out.1.txt  ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("ggplot2",    repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("maps",    repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("dplyr",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("sf",  repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("fields",  repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("Imap",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("raster",  repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("readxl",    repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("ncdf4",   repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("rgdal", repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("ggmap",   repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("lawn",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("sp",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("shapefiles",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("tmap",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("spdplyr",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("rgdal",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'library()'   | sort | tee R_library_list.out.1.txt  ;\
     ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.1.txt   ;\
     echo "Done installing packages cran packages - part 1" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
     date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
@@ -72,28 +72,28 @@ RUN echo "installing packages cran packages - part 1" | tee -a _TOP_DIR_OF_CONTA
 
     # initialization2.R
 RUN echo "installing packages cran packages - part 2" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
-    Rscript --quiet -e 'install.packages("MASS",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("reshape2",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("cowplot",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("corrplot",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("RColorBrewer",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("fmsb",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("ggmap",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("tictoc",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("stargazer",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("psych",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("GPArotation",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("cluster",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("factoextra",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("DandEFA",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("xtrable",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("psychTools",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("aCRM",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("clusterCrit",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("data.table",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("tigris",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("DAAG",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'library()'   | sort | tee R_library_list.out.2.txt  ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("MASS",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("reshape2",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("cowplot",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("corrplot",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("RColorBrewer",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("fmsb",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("ggmap",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("tictoc",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("stargazer",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("psych",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("GPArotation",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("cluster",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("factoextra",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("DandEFA",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("xtrable",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("psychTools",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("aCRM",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("clusterCrit",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("data.table",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("tigris",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("DAAG",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'library()'   | sort | tee R_library_list.out.2.txt  ;\
     ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.2.txt   ;\
     echo "Done installing packages cran packages - part 2" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
     date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
@@ -101,38 +101,38 @@ RUN echo "installing packages cran packages - part 2" | tee -a _TOP_DIR_OF_CONTA
 
     # initialization3.R
 RUN echo "installing packages cran packages - part 3" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
-    Rscript --quiet -e 'install.packages("RSQLite",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("rgeos",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("gpclib",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("utils",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("plyr",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("maptools",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("datamart",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("dismo",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("openair",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("broom",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("gridExtra",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("foreach",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("doParallel",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("sandwich",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("lmtest",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("cvTools",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("timeDate",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("lubridate",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("zoo",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("stringr",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("stringi",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("chron",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("proj4",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("akima",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("RColorBrewer",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("directlabels",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("FactoMineR",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("rstudioapi",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("iterators",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("doSNOW",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'install.packages("Hmisc",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'library()'   | sort | tee R_library_list.out.3.txt  ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("RSQLite",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("rgeos",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("gpclib",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("utils",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("plyr",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("maptools",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("datamart",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("dismo",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("openair",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("broom",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("gridExtra",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("foreach",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("doParallel",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("sandwich",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("lmtest",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("cvTools",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("timeDate",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("lubridate",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("zoo",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("stringr",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("stringi",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("chron",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("proj4",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("akima",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("RColorBrewer",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("directlabels",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("FactoMineR",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("rstudioapi",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("iterators",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("doSNOW",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("Hmisc",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'library()'   | sort | tee R_library_list.out.3.txt  ;\
     ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.3.txt   ;\
     echo "Done installing packages cran packages - part 3" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
     date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
@@ -140,8 +140,8 @@ RUN echo "installing packages cran packages - part 3" | tee -a _TOP_DIR_OF_CONTA
 
     # from library() calls
 RUN echo "installing packages cran packages - part 4" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
-    Rscript --quiet -e 'install.packages(c("aCRM", "akima", "broom", "cluster", "clusterCrit", "corrplot", "DAAG", "DandEFA", "datamart", "data.table", "directlabels", "dismo", "dplyr", "factoextra", "FactoMineR", "fields", "fmsb", "gdata", "ggmap", "ggplot2", "ggthemes", "gpclib", "gridExtra", "Hmisc", "lubridate", "maps", "maptools", "ncdf", "ncdf4", "openair", "openxlsx", "plyr", "proj4", "psych", "psychTools", "raster", "RColorBrewer", "readxl", "reshape2", "rgdal", "rgeos", "rJava", "rstudioapi", "scales", "sf", "sp", "stargazer", "stringi", "stringr", "tibble", "tictoc", "tidyr", "tigris", "timeDate", "tmap", "units", "utils", "xlsx", "xtable", "zoo"),     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet -e 'library()'   | sort | tee R_library_list.out.4.txt  ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages(c("aCRM", "akima", "broom", "cluster", "clusterCrit", "corrplot", "DAAG", "DandEFA", "datamart", "data.table", "directlabels", "dismo", "dplyr", "factoextra", "FactoMineR", "fields", "fmsb", "gdata", "ggmap", "ggplot2", "ggthemes", "gpclib", "gridExtra", "Hmisc", "lubridate", "maps", "maptools", "ncdf", "ncdf4", "openair", "openxlsx", "plyr", "proj4", "psych", "psychTools", "raster", "RColorBrewer", "readxl", "reshape2", "rgdal", "rgeos", "rJava", "rstudioapi", "scales", "sf", "sp", "stargazer", "stringi", "stringr", "tibble", "tictoc", "tidyr", "tigris", "timeDate", "tmap", "units", "utils", "xlsx", "xtable", "zoo"),     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'library()'   | sort | tee R_library_list.out.4.txt  ;\
     ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.4.txt   ;\
     echo "Done installing packages cran packages - part 4" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
     date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
@@ -150,7 +150,7 @@ RUN echo "installing packages cran packages - part 4" | tee -a _TOP_DIR_OF_CONTA
 RUN     cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  \
-  && echo  "Dockerfile 2020.0320 1318"  >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2020.0321 1538"  >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Grand Finale"
 
 #- ENV TZ America/Los_Angeles  
