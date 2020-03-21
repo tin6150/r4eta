@@ -23,27 +23,30 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     apt-get update ;\
     # ubuntu:
     apt-get --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen xterm ;\
+    apt-get --quiet install netcdf-bin libnetcdf-c++4 libnetcdf-c++4-1 libnetcdf-c++4-dev libnetcdf-dev cdftools nco ncview r-cran-ncdf4  units gdal-bin gdal-data libgdal-dev libgdal26  r-cran-rgdal  curl r-cran-rcurl libcurl4 libcurl4-openssl-dev libssl-dev r-cran-httr libgeos-dev r-cran-xml r-cran-xml2 libxml2 rio ;\
+    # rstudio dont seems to be in Debian bullseye/sid :/
     apt-get --quiet install rstudio ;\
     echo '==================================================================' ;\
     echo "git cloning the repo for reference/tracking" | tee -a _TOP_DIR_OF_CONTAINER_ ;\
-    #apt-get -y --quiet install git  ;\
+    apt-get -y --quiet install git-all  ;\
     test -d /opt/gitrepo  || mkdir -p /opt/gitrepo        ;\
     cd /opt/gitrepo       ;\
     test -d /opt/gitrepo/r4eta  || git clone https://github.com/tin6150/r4eta.git  ;\
-    cd /opt/gitrepo/r4eta &&  git pull && cd /            ;\
+    cd /opt/gitrepo/r4eta &&  git pull             ;\
 
+		cd / ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
-    echo "installing packages cran packages" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
-    date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
+    echo "installing cran packages" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_                        ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
     echo ''
     # initialization1.R
 
-RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
+RUN echo "installing packages cran packages - part 1" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
     Rscript --quiet -e 'install.packages("ggplot2",    repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("maps",    repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet -e 'install.packages("dplyr",     repos = "http://cran.us.r-project.org")'    ;\
