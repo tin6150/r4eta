@@ -24,7 +24,7 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     apt-get update ;\
     # ubuntu:
     apt-get -y --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen xterm ;\
-    apt-get -y --quiet install netcdf-bin libnetcdf-c++4 libnetcdf-c++4-1 libnetcdf-c++4-dev libnetcdf-dev cdftools nco ncview r-cran-ncdf4  units gdal-bin gdal-data libgdal-dev libgdal26  r-cran-rgdal  curl r-cran-rcurl libcurl4 libcurl4-openssl-dev libssl-dev r-cran-httr libgeos-dev r-cran-xml r-cran-xml2 libxml2 rio  ;\ 
+    apt-get -y --quiet install netcdf-bin libnetcdf-c++4 libnetcdf-c++4-1 libnetcdf-c++4-dev libnetcdf-dev cdftools nco ncview r-cran-ncdf4  units libudunits2-dev gdal-bin gdal-data libgdal-dev libgdal26  r-cran-rgdal  curl r-cran-rcurl libcurl4 libcurl4-openssl-dev libssl-dev r-cran-httr libgeos-dev r-cran-xml r-cran-xml2 libxml2 rio  java-common javacc javacc4 r-cran-rjava ;\ 
     # debian calls it libnode-dev (ubuntu call it libv8-dev?)
     apt-get -y --quiet install libnode-dev libv8-dev ;\
     # rstudio dont seems to exist in Debian bullseye/sid :/
