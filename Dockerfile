@@ -25,7 +25,12 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     # ubuntu:
     apt-get -y --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen xterm ;\
     apt-get -y --quiet install netcdf-bin libnetcdf-c++4 libnetcdf-c++4-1 libnetcdf-c++4-dev libnetcdf-dev cdftools nco ncview r-cran-ncdf4  units libudunits2-dev gdal-bin gdal-data libgdal-dev libgdal26  r-cran-rgdal  curl r-cran-rcurl libcurl4 libcurl4-openssl-dev libssl-dev r-cran-httr libgeos-dev r-cran-xml r-cran-xml2 libxml2 rio  java-common javacc javacc4  openjdk-8-jre-headless  ;\
-    apt-get -y --quiet install openjdk-14-jre-headless r-cran-rjava  ;\ 
+    apt-get -y --quiet install openjdk-14-jre-headless   ;\ 
+    # default-jdk is what provide javac !   # -version = 11.0.6
+    # ref: https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-18-04
+    # update-alternatives --config java --skip-auto # not needed, but could run interactively to change jdk
+    apt-get -y --quiet install default-jdk r-cran-rjava  ;\ 
+    R CMD javareconf  ;\
     # debian calls it libnode-dev (ubuntu call it libv8-dev?)
     apt-get -y --quiet install libnode-dev libv8-dev ;\
     #-- rstudio dont seems to exist in Debian bullseye/sid :/
