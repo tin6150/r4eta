@@ -17,8 +17,17 @@ Pull the container from the cloud ::
 
 Run R interactively ::
 	./myR
+  q() # exit R and container session.
 
-Run R script, find out what version it is ::
+Run R interactively, get a shell INSIDE the container ::
+	singularity exec  myR  bash
+	ls # current working directory should be bind mounted
+	R  # run R interactively, use q() to quit, return back to shell INSIDE the container
+  Rscript initialization3.R  # invoke an R script
+	exit # exit the container, return to host prompt
+
+
+Run R script in "batch mode", find out what version it is ::
 	singularity exec myR /usr/bin/Rscript --version
 
 
