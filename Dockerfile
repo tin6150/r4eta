@@ -23,7 +23,7 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     echo "installing packages via apt"       | tee -a _TOP_DIR_OF_CONTAINER_  ;\
     apt-get update ;\
     # ubuntu:
-    apt-get -y --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen xterm ;\
+    apt-get -y --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen ;\
     apt-get -y --quiet install netcdf-bin libnetcdf-c++4 libnetcdf-c++4-1 libnetcdf-c++4-dev libnetcdf-dev cdftools nco ncview r-cran-ncdf4  units libudunits2-dev gdal-bin gdal-data libgdal-dev libgdal26  r-cran-rgdal  curl r-cran-rcurl libcurl4 libcurl4-openssl-dev libssl-dev r-cran-httr libgeos-dev r-cran-xml r-cran-xml2 libxml2 rio  java-common javacc javacc4  openjdk-8-jre-headless  ;\
     apt-get -y --quiet install openjdk-14-jre-headless   ;\ 
     # default-jdk is what provide javac !   # -version = 11.0.6
@@ -35,10 +35,11 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     apt-get -y --quiet install libnode-dev libv8-dev ;\
     #-- rstudio dont seems to exist in Debian bullseye/sid :/
     #-- apt-get --quiet install rstudio  ;\
-    apt-get --quiet install r-cran-rstudioapi ;\
+    apt-get --quiet install r-cran-rstudioapi libqt5webenginewidgets5 xterm apt-file ;\
+    apt-file update ;\
     mkdir -p Downloads &&  cd Downloads ;\
-    wget --quiet https://download1.rstudio.org/desktop/trusty/amd64/rstudio-1.2.5033-amd64.deb  -O rsudio.deb ;\
-    apt-get -y --quiet install ./rsudio.deb     ;\
+    wget --quiet https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.2.5033-amd64.deb  -O rstudio4deb10.deb ;\
+    apt-get -y --quiet install ./rstudio4deb10.deb     ;\
     cd ..   ;\
     echo '==================================================================' ;\
     echo "git cloning the repo for reference/tracking" | tee -a _TOP_DIR_OF_CONTAINER_ ;\

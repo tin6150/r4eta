@@ -8,6 +8,14 @@ Container for R with libraries for LBNL Energy Technology Area project
 * singularity hub: https://singularity-hub.org/collections/4160
 
 
+container sizes
+----
+
+myR w/o lots of libs needed by rstudio: 1.7G in singularity
+docker last layer only:
+tin6150/r4eta            latest              dd66fe981035        43 hours ago        4.89GB
+
+
 Examples for using the singularity container
 --------------------------------------------
 
@@ -54,3 +62,9 @@ Docker build, run and troubleshoot example
 	docker exec -it   distracted_keller  bash
 
 
+rstudio
+-------
+
+	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g) --entrypoint rstudio tin6150/r4eta
+	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g) --entrypoint xterm  tin6150/r4eta
+	need Qt... ? libssl
