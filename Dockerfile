@@ -35,7 +35,8 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     apt-get -y --quiet install libnode-dev libv8-dev ;\
     #-- rstudio dont seems to exist in Debian bullseye/sid :/
     #-- apt-get --quiet install rstudio  ;\
-    apt-get --quiet install r-cran-rstudioapi libqt5webenginewidgets5 xterm apt-file ;\
+    apt-get -y --quiet install r-cran-rstudioapi libqt5gui5 libqt5network5  libqt5webenginewidgets5 xterm ;\
+		apt-get -y --quiet install apt-file ;\
     apt-file update ;\
     mkdir -p Downloads &&  cd Downloads ;\
     wget --quiet https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.2.5033-amd64.deb  -O rstudio4deb10.deb ;\
