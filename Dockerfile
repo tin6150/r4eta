@@ -17,13 +17,14 @@ ARG TZ=PST8PDT
 
 #ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
+RUN echo  ''  ;\
+    touch _TOP_DIR_OF_CONTAINER_  ;\
     echo "begining docker build process at " | tee -a _TOP_DIR_OF_CONTAINER_  ;\
     date | tee -a       _TOP_DIR_OF_CONTAINER_ ;\
     echo "installing packages via apt"       | tee -a _TOP_DIR_OF_CONTAINER_  ;\
     apt-get update ;\
     # ubuntu:
-    apt-get -y --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen ;\
+    apt-get -y --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen xterm ;\
     apt-get -y --quiet install netcdf-bin libnetcdf-c++4 libnetcdf-c++4-1 libnetcdf-c++4-dev libnetcdf-dev cdftools nco ncview r-cran-ncdf4  units libudunits2-dev gdal-bin gdal-data libgdal-dev libgdal26  r-cran-rgdal  curl r-cran-rcurl libcurl4 libcurl4-openssl-dev libssl-dev r-cran-httr libgeos-dev r-cran-xml r-cran-xml2 libxml2 rio  java-common javacc javacc4  openjdk-8-jre-headless  ;\
     apt-get -y --quiet install openjdk-14-jre-headless   ;\ 
     # default-jdk is what provide javac !   # -version = 11.0.6
@@ -33,15 +34,6 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     R CMD javareconf  ;\
     # debian calls it libnode-dev (ubuntu call it libv8-dev?)
     apt-get -y --quiet install libnode-dev libv8-dev ;\
-    #-- rstudio dont seems to exist in Debian bullseye/sid :/
-    #-- apt-get --quiet install rstudio  ;\
-    apt-get -y --quiet install r-cran-rstudioapi libqt5gui5 libqt5network5  libqt5webenginewidgets5 xterm ;\
-		apt-get -y --quiet install apt-file ;\
-    apt-file update ;\
-    mkdir -p Downloads &&  cd Downloads ;\
-    wget --quiet https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.2.5033-amd64.deb  -O rstudio4deb10.deb ;\
-    apt-get -y --quiet install ./rstudio4deb10.deb     ;\
-    cd ..   ;\
     echo '==================================================================' ;\
     echo "git cloning the repo for reference/tracking" | tee -a _TOP_DIR_OF_CONTAINER_ ;\
     apt-get -y --quiet install git-all  ;\
@@ -49,20 +41,35 @@ RUN touch    _TOP_DIR_OF_CONTAINER_  ;\
     cd /opt/gitrepo       ;\
     test -d /opt/gitrepo/r4eta  || git clone https://github.com/tin6150/r4eta.git  ;\
     cd /opt/gitrepo/r4eta &&  git pull             ;\
+    cd /     ;\
+    echo ""  ;\
+    echo '==================================================================' ;\
+    echo "install for rstudio GUI (Qt)"      | tee -a _TOP_DIR_OF_CONTAINER_  ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_                                 ;\
+    echo '==================================================================' ;\
+    #-- rstudio dont seems to exist in Debian bullseye/sid :/
+    #-- apt-get --quiet install rstudio  ;\
+    apt-get -y --quiet install r-cran-rstudioapi libqt5gui5 libqt5network5  libqt5webenginewidgets5 qterminal ;\
+    apt-get -y --quiet install apt-file ;\
+    apt-file update ;\
+    mkdir -p Downloads &&  cd Downloads ;\
+    wget --quiet https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.2.5033-amd64.deb  -O rstudio4deb10.deb ;\
+    apt-get -y --quiet install ./rstudio4deb10.deb     ;\
+    cd ..    ;\
+    echo ""  
 
-		cd / ;\
+RUN echo ''  ;\
+    cd   /   ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
-    echo "installing cran packages" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
+    echo "installing packages cran packages - part 1" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
     date | tee -a      _TOP_DIR_OF_CONTAINER_                        ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
-    echo ''
+    echo '' ;\
     # initialization1.R
-
-RUN echo "installing packages cran packages - part 1" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("ggplot2",    repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("maps",    repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("dplyr",     repos = "http://cran.us.r-project.org")'    ;\
@@ -86,8 +93,17 @@ RUN echo "installing packages cran packages - part 1" | tee -a _TOP_DIR_OF_CONTA
     date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
     echo ""
 
+RUN echo ''  ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo "installing packages cran packages - part 2" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_                        ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo '' ;\
     # initialization2.R
-RUN echo "installing packages cran packages - part 2" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("MASS",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("reshape2",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("cowplot",     repos = "http://cran.us.r-project.org")'    ;\
@@ -115,8 +131,17 @@ RUN echo "installing packages cran packages - part 2" | tee -a _TOP_DIR_OF_CONTA
     date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
     echo ""
 
+RUN echo ''  ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo "installing packages cran packages - part 3" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_                        ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo ''  ;\
     # initialization3.R
-RUN echo "installing packages cran packages - part 3" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("RSQLite",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("rgeos",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("gpclib",     repos = "http://cran.us.r-project.org")'    ;\
@@ -154,8 +179,17 @@ RUN echo "installing packages cran packages - part 3" | tee -a _TOP_DIR_OF_CONTA
     date | tee -a      _TOP_DIR_OF_CONTAINER_                      ;\
     echo ""
 
+RUN echo ''  ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo "installing packages cran packages - part 4" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_                        ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo ''  ;\
     # from library() calls
-RUN echo "installing packages cran packages - part 4" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
     Rscript --quiet --no-readline --slave -e 'install.packages(c("aCRM", "akima", "broom", "cluster", "clusterCrit", "corrplot", "DAAG", "DandEFA", "datamart", "data.table", "directlabels", "dismo", "dplyr", "factoextra", "FactoMineR", "fields", "fmsb", "gdata", "ggmap", "ggplot2", "ggthemes", "gpclib", "gridExtra", "Hmisc", "lubridate", "maps", "maptools", "ncdf", "ncdf4", "openair", "openxlsx", "plyr", "proj4", "psych", "psychTools", "raster", "RColorBrewer", "readxl", "reshape2", "rgdal", "rgeos", "rJava", "rstudioapi", "scales", "sf", "sp", "stargazer", "stringi", "stringr", "tibble", "tictoc", "tidyr", "tigris", "timeDate", "tmap", "units", "utils", "xlsx", "xtable", "zoo"),     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'library()'   | sort | tee R_library_list.out.4.txt  ;\
     ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.4.txt   ;\
@@ -164,10 +198,10 @@ RUN echo "installing packages cran packages - part 4" | tee -a _TOP_DIR_OF_CONTA
     date | tee -a      _TOP_DIR_OF_CONTAINER_   ;\
     echo ""
 
-RUN     cd / \
+RUN  cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  \
-  && echo  "Dockerfile 2020.0321 1616"  >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2020.0326 1410"  >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Grand Finale"
 
 #- ENV TZ America/Los_Angeles  
@@ -182,9 +216,8 @@ ENV TEST_DOCKER_ENV_REF https://vsupalov.com/docker-arg-env-variable-guide/#sett
 
 #ENTRYPOINT ["cat", "/_TOP_DIR_OF_CONTAINER_"]
 #ENTRYPOINT [ "/bin/bash" ]
+#ENTRYPOINT [ "/usr/bin/rstudio" ]
 ENTRYPOINT [ "R" ]
 # if no defined ENTRYPOINT, default to bash inside the container
-# parent container defined tcsh.
-# can also run with exec bash to get shell:
-# docker exec -it tin6150/r4eta -v $HOME:/home/tin  bash 
+# docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g) --entrypoint rstudio tin6150/r4eta
 # careful not to cover /home/username (for this container)

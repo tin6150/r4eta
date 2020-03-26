@@ -53,3 +53,49 @@ This application failed to start because no Qt platform plugin could be initiali
 
 Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, wayland-egl, wayland, wayland-xcomposite-egl, wayland-xcomposite-glx, xcb.
 
+
+
+x11vnc
+        didn't cut it
+
+lxde-settings-daemon lxde-common lxde-core lxde 
+
+libxkbcommon-x11-dev
+
+/usr/lib/rstudio/plugins/platforms/libqxcb.so,
+
+Got keys from plugin meta data ("wayland-egl")
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/rstudio/plugins/platforms/libqwayland-generic.so"
+Found metadata in lib /usr/lib/rstudio/plugins/platforms/libqwayland-generic.so, metadata=
+{
+o
+qterminal
+lxqt/testing,unstable 30 amd64
+  Metapackage for LXQt
+
+
+
+~~~~
+
+docker run --rm -p 8787:8787 -e PASSWORD=yourpasswordhere rocker/rstudio
+
+
+docker build -t rocker/x11 .
+XSOCK=/tmp/.X11-unix && XAUTH=/tmp/.docker.xauth && xauth nlist :0 | sed -e "s/^..../ffff/" | xauth -f $XAUTH nmerge - && docker run  -v $XSOCK:$XSOCK -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH  -e DISPLAY=$DISPLAY --rm -it rocker/x11 R -e "capabilities()"
+
+
+
+https://github.com/rocker-org/rocker-versioned
+
+maybe should just build my thing on top of their container...
+
+actually, their stuff may have more features.
+but i just had to `xhost +` for root to launch xter, qterminal, rstudio.
+
+reorg the Dockerfile to have rstudio added at the bottom.
+hmm... maybe not, since it works. 
+more likely to need packages addition which beneficial to have it toward the end.
+
+no need for lxde, lxqt 
+
+
