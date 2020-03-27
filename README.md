@@ -27,6 +27,9 @@ Run R interactively ::
 	./myR
   q() # exit R and container session.
 
+Run rstudio interactively ::
+	singularity exec myR  rstudio
+
 Run R interactively, get a shell INSIDE the container ::
 	singularity exec  myR  bash
 	ls # current working directory should be bind mounted
@@ -59,12 +62,36 @@ Docker build, run and troubleshoot example
 	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g) tin6150/r4eta
 	docker run  -it --entrypoint /usr/bin/Rscript -v $HOME:/tmp/home  --user=$(id -u):$(id -g) tin6150/r4eta
 	docker run  -it --entrypoint /bin/bash  --user=$(id -u):$(id -g) tin6150/r4eta
-	docker exec -it   distracted_keller  bash
+	docker exec -it boring_home  bash
 
 
-rstudio
--------
+rstudio Qt GUI
+--------------
 
-	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g) --entrypoint rstudio tin6150/r4eta
-	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g) --entrypoint xterm  tin6150/r4eta
-	need Qt... ? libssl
+	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /tmp/.docker.xauth:/tmp/.xauth -v $HOME:/tmp/home  --entrypoint rstudio tin6150/r4eta
+
+need to run rstudio with root, so can't use the --user=$(id -u) cuz it needs to a web server...
+
+
+
+Troubleshooting if GUI doesn't lauch:
+  
+Instead of rstudio, can execute xterm or qterminal 
+as a lighter test to check whether X11 is working for the container.  
+The capabilities() function in R should report X11 as TRUE.
+Running `xhost +` on the host may help.
+Change :0 to whatever DISPLAY session you maybe using, or omit it altogether.
+
+  XSOCK=/tmp/.X11-unix && XAUTH=/tmp/.docker.xauth && xauth nlist :0 | sed -e "s/^..../ffff/" | xauth -f $XAUTH nmerge - && docker run  -v $XSOCK:$XSOCK -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH  -e DISPLAY=$DISPLAY --rm -it  tin6150/r4eta  R -e "capabilities()"
+
+should produce output like:
+
+	> capabilities()
+				 jpeg         png        tiff       tcltk         X11        aqua 
+				 TRUE        TRUE        TRUE        TRUE        TRUE       FALSE 
+		 http/ftp     sockets      libxml        fifo      cledit       iconv 
+				 TRUE        TRUE        TRUE        TRUE       FALSE        TRUE 
+					NLS     profmem       cairo         ICU long.double     libcurl 
+				 TRUE        TRUE        TRUE        TRUE        TRUE        TRUE 
+
+	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g)  -p 8787:8787 -e PASSWORD=yourpasswordhere   --entrypoint rstudio tin6150/r4eta

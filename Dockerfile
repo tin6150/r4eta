@@ -49,7 +49,7 @@ RUN echo  ''  ;\
     echo '==================================================================' ;\
     #-- rstudio dont seems to exist in Debian bullseye/sid :/
     #-- apt-get --quiet install rstudio  ;\
-    apt-get -y --quiet install r-cran-rstudioapi libqt5gui5 libqt5network5  libqt5webenginewidgets5 qterminal ;\
+    apt-get -y --quiet install r-cran-rstudioapi libqt5gui5 libqt5network5  libqt5webenginewidgets5 qterminal net-tools ;\
     apt-get -y --quiet install apt-file ;\
     apt-file update ;\
     mkdir -p Downloads &&  cd Downloads ;\
@@ -198,10 +198,11 @@ RUN echo ''  ;\
     date | tee -a      _TOP_DIR_OF_CONTAINER_   ;\
     echo ""
 
+
 RUN  cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  \
-  && echo  "Dockerfile 2020.0326 1410"  >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2020.0327 1650"  >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Grand Finale"
 
 #- ENV TZ America/Los_Angeles  
