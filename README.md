@@ -11,9 +11,11 @@ Container for R with libraries for LBNL Energy Technology Area project
 container sizes
 ----
 
-myR w/o lots of libs needed by rstudio: 1.7G in singularity
+myR has rstudio binary, but  w/o Qt: 1.7G in singularity
+myR with Qt Libs needed by rstudio:  1.8G in singularity
 docker last layer only:
 tin6150/r4eta            latest              dd66fe981035        43 hours ago        4.89GB
+in docker, largest layer about 1.7 GB?
 
 
 Examples for using the singularity container
