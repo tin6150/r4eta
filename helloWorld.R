@@ -4,4 +4,5 @@ print("Hello Word from R!")
 
 library()
 
+capabilities()
 

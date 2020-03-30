@@ -12,7 +12,7 @@ container sizes
 ----
 
 myR has rstudio binary, but  w/o Qt: 1.7G in singularity
-myR with Qt Libs needed by rstudio:  1.8G in singularity
+myR with Qt Libs needed by rstudio:  1.9G in singularity
 docker last layer only:
 tin6150/r4eta            latest              dd66fe981035        43 hours ago        4.89GB
 in docker, largest layer about 1.7 GB?
@@ -31,12 +31,15 @@ Run R interactively ::
 
 Run rstudio interactively ::
 	singularity exec myR  rstudio
+  -or-
+	singularity exec shub://tin6150/r4eta rstudio
 
-Run R interactively, get a shell INSIDE the container ::
+
+Interact with the container, run bash, R, Rscript INSIDE the container ::
 	singularity exec  myR  bash
 	ls # current working directory should be bind mounted
 	R  # run R interactively, use q() to quit, return back to shell INSIDE the container
-  Rscript initialization3.R  # invoke an R script
+  Rscript helloWorld.R  # invoke an R script
 	exit # exit the container, return to host prompt
 
 
@@ -67,9 +70,12 @@ Docker build, run and troubleshoot example
 	docker exec -it boring_home  bash
 
 
-rstudio Qt GUI
---------------
+rstudio Qt GUI via docker
+-------------------------
 
+Singularity is actually a lot more straightforward in this regard (see above), since everything is run as a user process without uid change.  Docker needs to map a number of environments before a GUI can be run:
+
+  xhost +
 	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /tmp/.docker.xauth:/tmp/.xauth -v $HOME:/tmp/home  --entrypoint rstudio tin6150/r4eta
 
 need to run rstudio with root, so can't use the --user=$(id -u) cuz it needs to a web server...
