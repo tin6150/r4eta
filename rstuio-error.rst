@@ -1,4 +1,6 @@
 
+earlier, rstudio had missing library, ldd investigation notes:
+
 ubuntu vs debian release
 https://askubuntu.com/questions/445487/what-debian-version-are-the-different-ubuntu-versions-based-on
 
@@ -83,6 +85,7 @@ docker run --rm -p 8787:8787 -e PASSWORD=yourpasswordhere rocker/rstudio
 docker build -t rocker/x11 .
 XSOCK=/tmp/.X11-unix && XAUTH=/tmp/.docker.xauth && xauth nlist :0 | sed -e "s/^..../ffff/" | xauth -f $XAUTH nmerge - && docker run  -v $XSOCK:$XSOCK -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH  -e DISPLAY=$DISPLAY --rm -it rocker/x11 R -e "capabilities()"
 
+XSOCK=/tmp/.X11-unix && XAUTH=/tmp/.docker.xauth && xauth nlist :0 | sed -e "s/^..../ffff/" | xauth -f $XAUTH nmerge - && docker run  -v $XSOCK:$XSOCK -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH  -e DISPLAY=$DISPLAY --rm -it tin6150/r4eta R -e "capabilities()"
 
 
 https://github.com/rocker-org/rocker-versioned
@@ -98,4 +101,26 @@ more likely to need packages addition which beneficial to have it toward the end
 
 no need for lxde, lxqt 
 
+
+~~~~
+
+zink vs m42
+both Mint 19.3
+
+singularity exec myR rstudio	
+	works on m42, launch gui app
+	broken on zink.  maybe RandR/Xinerama/nvidia problem.
+	xterm and qterminal runs on zink (rootless docker Mint 19.3), but crash when rstudio is launched.  Likely Xinerama or "RandR missing" issue.
+
+
+docker ... rstudio
+	broken for zink 
+	m42... works: rootless docker issue, need to run as root, even if it is just fake uid 0.  this worked:
+	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  -p 8787:8787 -e PASSWORD=yourpasswordhere   --entrypoint rstudio tin6150/r4eta  
+
+
+
+zink ssh -Y m42
+	singularity exec myR xterm   # ok
+	singularity exec myR rstudio # crash too, so it is really not liking the X server on Zink
 

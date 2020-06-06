@@ -208,6 +208,7 @@ RUN echo ''  ;\
     Rscript --quiet --no-readline --slave -e 'library()'   | sort | tee R_library_list.out.5.txt  ;\
     echo "Done installing packages cran packages - part 5" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
     date | tee -a      _TOP_DIR_OF_CONTAINER_   ;\
+    echo "Dockerfile" | tee  _CONTAINER_tin6150_r4eta_  ;\
     echo ""
 
 RUN  cd / \
