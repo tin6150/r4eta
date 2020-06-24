@@ -124,3 +124,27 @@ zink ssh -Y m42
 	singularity exec myR xterm   # ok
 	singularity exec myR rstudio # crash too, so it is really not liking the X server on Zink
 
+
+~~~~
+
+zink, after getting xrandr running (xinerama 0) :
+
+   singularity exec --bind /run/user/43143 shub://tin6150/r4eta rstudio
+
+libGL error: No matching fbConfigs or visuals found
+libGL error: failed to load driver: swrast
+WebEngineContext used before QtWebEngine::initialize() or OpenGL context creation failed.
+Failed to create OpenGL context for format QSurfaceFormat(version 2.0, options QFlags<QSurfaceFormat::FormatOption>(), depthBufferSize 24, redBufferSize -1, greenBufferSize -1, blueBufferSize -1, alphaBufferSize -1, stencilBufferSize 8, samples 0, swapBehavior QSurfaceFormat::DefaultSwapBehavior, swapInterval 1, colorSpace QSurfaceFormat::DefaultColorSpace, profile  QSurfaceFormat::NoProfile)
+Received signal 6
+
+
+maybe too many gl.so and confusing matter? :
+https://askubuntu.com/questions/834254/steam-libgl-error-no-matching-fbconfigs-or-visuals-found-libgl-error-failed-t
+
+sudo mv /usr/lib/i386-linux-gnu/libGL.so.1 /usr/lib/i386-linux-gnu/libGL.so.1.disabled
+(it was a sym link)
+lrwxrwxrwx 1 root root 14 May 10  2019 /usr/lib/i386-linux-gnu/libGL.so.1 -> libGL.so.1.0.0
+
+but i still have the problem/crash.
+ndivia driver problem...
+
