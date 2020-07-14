@@ -211,10 +211,21 @@ RUN echo ''  ;\
     echo "Dockerfile" | tee  _CONTAINER_tin6150_r4eta_  ;\
     echo ""
 
+RUN echo ''  ;\
+    echo '==================================================================' ;\
+    echo "Pork Barrel: GUI file manager"  |   tee -a _TOP_DIR_OF_CONTAINER_   ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_                        ;\
+    echo '==================================================================' ;\
+    echo ''  ;\
+    apt-get install -y --quiet xfe ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_   ;\
+    echo ""
+
 RUN  cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  \
   && echo  "Dockerfile 2020.0603 1919"  >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2020.0713 1600"  >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Grand Finale"
 
 #- ENV TZ America/Los_Angeles  
