@@ -65,7 +65,7 @@ Docker build, run and troubleshoot example
 	docker build -t tin6150/r4eta -f Dockerfile .  | tee Dockerfile.monolithic.log
 
 	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g) tin6150/r4eta
-	docker run  -it --entrypoint /usr/bin/Rscript -v $HOME:/tmp/home  --user=$(id -u):$(id -g) tin6150/r4eta
+	docker run  -it --entrypoint /usr/bin/Rscript -v $HOME:/tmp/home  --user=$(id -u):$(id -g) tin6150/r4eta -e 'capabilities()'
 	docker run  -it --entrypoint /bin/bash  --user=$(id -u):$(id -g) tin6150/r4eta
 	docker exec -it boring_home  bash
 
@@ -94,12 +94,29 @@ Change :0 to whatever DISPLAY session you maybe using, or omit it altogether.
 
 should produce output like:
 
-	> capabilities()
-				 jpeg         png        tiff       tcltk         X11        aqua 
-				 TRUE        TRUE        TRUE        TRUE        TRUE       FALSE 
-		 http/ftp     sockets      libxml        fifo      cledit       iconv 
-				 TRUE        TRUE        TRUE        TRUE       FALSE        TRUE 
-					NLS     profmem       cairo         ICU long.double     libcurl 
-				 TRUE        TRUE        TRUE        TRUE        TRUE        TRUE 
+> capabilities()
+     jpeg        png        tiff       tcltk         X11       aqua 
+     TRUE        TRUE        TRUE        TRUE        TRUE     FALSE 
 
-	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g)  -p 8787:8787 -e PASSWORD=yourpasswordhere   --entrypoint rstudio tin6150/r4eta
+     http/ftp    sockets     libxml      fifo      cledit     iconv 
+     TRUE        TRUE        TRUE        TRUE       FALSE      TRUE 
+
+     NLS         profmem     cairo        ICU long.double   libcurl 
+     TRUE        TRUE        TRUE        TRUE        TRUE      TRUE 
+
+
+~~~~
+
+docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home                            -p 8787:8787 -e PASSWORD=yourpasswordhere   --entrypoint rstudio tin6150/r4eta  # rootless docker, actually need to run as root 
+
+docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g)  -p 8787:8787 -e PASSWORD=yourpasswordhere   --entrypoint rstudio tin6150/r4eta
+
+docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g) --entrypoint xterm tin6150/r4eta
+
+
+~~~~
+
+maybe rename repo to r4gis (but not r4ds, cuz like R wasn't going to be used for data science work?!)
+
+
+# vim: nosmartindent tabstop=4 noexpandtab shiftwidth=4 paste

@@ -220,6 +220,28 @@ RUN echo ''  ;\
     date | tee -a      _TOP_DIR_OF_CONTAINER_   ;\
     echo ""
 
+RUN echo ''  ;\
+    echo '==================================================================' ;\
+    echo "installing packages cran packages - part 5" | tee -a _TOP_DIR_OF_CONTAINER_  ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_                        ;\
+    echo '==================================================================' ;\
+    echo ''  ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("tidycensus",     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'library()'   | sort | tee R_library_list.out.5.txt  ;\
+    echo "Done installing packages cran packages - part 5" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_   ;\
+    echo "Dockerfile" | tee  _CONTAINER_tin6150_r4eta_  ;\
+    echo ""
+
+RUN echo ''  ;\
+    echo '==================================================================' ;\
+    echo "Pork Barrel: GUI file manager"  |   tee -a _TOP_DIR_OF_CONTAINER_   ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_                        ;\
+    echo '==================================================================' ;\
+    echo ''  ;\
+    apt-get install -y --quiet xfe ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_   ;\
+    echo ""
 
 RUN  cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
