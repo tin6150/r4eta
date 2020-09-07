@@ -23,8 +23,8 @@ RUN echo  ''  ;\
     date | tee -a       _TOP_DIR_OF_CONTAINER_ ;\
     echo "installing packages via apt"       | tee -a _TOP_DIR_OF_CONTAINER_  ;\
     apt-get update ;\
-    # ubuntu:
-    apt-get -y --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen xterm ;\
+    # ubuntu:   # procps provides uptime cmd
+    apt-get -y --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen xterm procps ;\
     apt-get -y --quiet install netcdf-bin libnetcdf-c++4 libnetcdf-c++4-1 libnetcdf-c++4-dev libnetcdf-dev cdftools nco ncview r-cran-ncdf4  units libudunits2-dev gdal-bin gdal-data libgdal-dev libgdal26  r-cran-rgdal  curl r-cran-rcurl libcurl4 libcurl4-openssl-dev libssl-dev r-cran-httr libgeos-dev r-cran-xml r-cran-xml2 libxml2 rio  java-common javacc javacc4  openjdk-8-jre-headless  ;\
     apt-get -y --quiet install openjdk-14-jre-headless   ;\ 
     # default-jdk is what provide javac !   # -version = 11.0.6
@@ -55,7 +55,24 @@ RUN echo  ''  ;\
     mkdir -p Downloads &&  cd Downloads ;\
     wget --quiet https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.2.5033-amd64.deb  -O rstudio4deb10.deb ;\
     apt-get -y --quiet install ./rstudio4deb10.deb     ;\
-    cd ..    ;\
+    cd /    ;\
+    echo ""  
+
+COPY . /r4eta
+
+RUN echo ''  ;\
+    cd   /   ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo "installing jupyter notebook server" | tee -a _TOP_DIR_OF_CONTAINER_ ;\
+    date | tee -a      _TOP_DIR_OF_CONTAINER_                                 ;\
+    echo '==================================================================' ;\
+    echo '==================================================================' ;\
+    echo '' ;\
+    # pre-req for anaconda (jupyter notebook server)
+		apt-get -y --quiet install apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor    1 libxcomposite1 libasound2 libxi6 libxtst6 ;\
+		bash -x ./r4eta/install_jupyter.sh 2>&1   | tee install_jupyter.log ;\
+    cd /    ;\
     echo ""  
 
 RUN echo ''  ;\
@@ -190,7 +207,12 @@ RUN echo ''  ;\
     echo '==================================================================' ;\
     echo ''  ;\
     # from library() calls
-    Rscript --quiet --no-readline --slave -e 'install.packages(c("aCRM", "akima", "broom", "cluster", "clusterCrit", "corrplot", "DAAG", "DandEFA", "datamart", "data.table", "directlabels", "dismo", "dplyr", "factoextra", "FactoMineR", "fields", "fmsb", "gdata", "ggmap", "ggplot2", "ggthemes", "gpclib", "gridExtra", "Hmisc", "lubridate", "maps", "maptools", "ncdf", "ncdf4", "openair", "openxlsx", "plyr", "proj4", "psych", "psychTools", "raster", "RColorBrewer", "readxl", "reshape2", "rgdal", "rgeos", "rJava", "rstudioapi", "scales", "sf", "sp", "stargazer", "stringi", "stringr", "tibble", "tictoc", "tidyr", "tigris", "timeDate", "tmap", "units", "utils", "xlsx", "xtable", "zoo"),     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages(c("aCRM", "akima", "broom", "cluster", "clusterCrit", "corrplot", "DandEFA", "datamart", "data.table", "directlabels", "dismo", "dplyr", "factoextra", "FactoMineR", "fields", "fmsb", "gdata", "ggmap", "ggplot2", "ggthemes", "gpclib", "gridExtra", "Hmisc", "lubridate", "maps", "maptools", "ncdf", "ncdf4", "openair", "openxlsx", "plyr", "proj4", "psych", "psychTools", "raster", "RColorBrewer", "readxl", "reshape2", "rgdal", "rgeos", "rJava", "rstudioapi", "scales", "sf", "sp", "stargazer", "stringi", "stringr", "tibble", "tictoc", "tidyr", "tigris", "timeDate", "tmap", "units", "utils", "xlsx", "xtable", "zoo"),     repos = "http://cran.us.r-project.org")'    ;\
+    # IRkernel, assume Jupyter Notebook already installed
+		Rscript --quiet --no-readline --slave -e 'install.packages("IRkernel", repos = "http://cran.us.r-project.org")' ;\
+		# add kernel spec to Jupyter, depends on jupyter already installed
+		Rscript --no-readline --slave -e "IRkernel::installspec(user = FALSE)" ;\
+    # 
     Rscript --quiet --no-readline --slave -e 'library()'   | sort | tee R_library_list.out.4.txt  ;\
     ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.4.txt   ;\
     dpkg --list | tee dpkg--list.txt   ;\
@@ -202,7 +224,7 @@ RUN echo ''  ;\
 RUN  cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  \
-  && echo  "Dockerfile 2020.0327 1650"  >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2020.0907 jupyter"  >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Grand Finale"
 
 #- ENV TZ America/Los_Angeles  
