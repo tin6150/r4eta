@@ -8,8 +8,10 @@ Start jupyter notebook web server (on specific port, eg 5997):
 
 docker run -p 5997:5997 -v "$PWD":/mnt -it --entrypoint=/opt/conda/bin/jupyter  tin6150/r4eta lab --allow-root  --no-browser --port=5997 --ip=0.0.0.0
 
-Point web browser to the URL returned on the console
-eg http://hima.lbl.gov:5997/ 
+Point web browser to something like
+  http://127.0.0.1:5997/ 
+  http://hima.lbl.gov:5997/ 
+and paste the token URL link shown on the terminal console
 
 
 Repo info

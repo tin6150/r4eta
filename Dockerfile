@@ -72,11 +72,9 @@ RUN echo ''  ;\
     # pre-req for anaconda (jupyter notebook server)
     apt-get -y --quiet install apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor    1 libxcomposite1 libasound2 libxi6 libxtst6 ;\
     bash -x ./r4eta/install_jupyter.sh 2>&1   | tee install_jupyter.log ;\
-    # IRkernel, assume Jupyter Notebook already installed
-    source /etc/bashrc  ;\
-    Rscript --quiet --no-readline --slave -e 'install.packages("IRkernel", repos = "http://cran.us.r-project.org")' | tee -a install_jupyter.log ;\
+    # IRkernel, assume Jupyter Notebook already installed &&
     # add kernel spec to Jupyter, depends on jupyter already installed
-    Rscript --no-readline --slave -e "IRkernel::installspec(user = FALSE)" | tee -a install_jupyter.log ;\
+    source /etc/bashrc  && Rscript --quiet --no-readline --slave -e 'install.packages("IRkernel", repos = "http://cran.us.r-project.org")' && Rscript --no-readline --slave -e "IRkernel::installspec(user = FALSE)" && jupyter kernelspec list | tee -a install_jupyter_IRkernel.log ;\
     cd /    ;\
     echo ""  
 
@@ -246,7 +244,7 @@ RUN echo ''  ;\
 RUN  cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  \
-  && echo  "Dockerfile 2020.0907.2112 jupyter IRkernel"  >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2020.0907.2300 IRkernel"  >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Grand Finale"
 
 #- ENV TZ America/Los_Angeles  
