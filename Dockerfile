@@ -15,7 +15,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG TERM=vt100
 ARG TZ=PST8PDT 
 
-#ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+#ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/conda/bin
 
 RUN echo  ''  ;\
     touch _TOP_DIR_OF_CONTAINER_  ;\
@@ -70,8 +70,13 @@ RUN echo ''  ;\
     echo '==================================================================' ;\
     echo '' ;\
     # pre-req for anaconda (jupyter notebook server)
-		apt-get -y --quiet install apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor    1 libxcomposite1 libasound2 libxi6 libxtst6 ;\
-		bash -x ./r4eta/install_jupyter.sh 2>&1   | tee install_jupyter.log ;\
+    apt-get -y --quiet install apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor    1 libxcomposite1 libasound2 libxi6 libxtst6 ;\
+    bash -x ./r4eta/install_jupyter.sh 2>&1   | tee install_jupyter.log ;\
+    # IRkernel, assume Jupyter Notebook already installed
+    source /etc/bashrc  ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("IRkernel", repos = "http://cran.us.r-project.org")' | tee -a install_jupyter.log ;\
+    # add kernel spec to Jupyter, depends on jupyter already installed
+    Rscript --no-readline --slave -e "IRkernel::installspec(user = FALSE)" | tee -a install_jupyter.log ;\
     cd /    ;\
     echo ""  
 
@@ -208,11 +213,6 @@ RUN echo ''  ;\
     echo ''  ;\
     # from library() calls
     Rscript --quiet --no-readline --slave -e 'install.packages(c("aCRM", "akima", "broom", "cluster", "clusterCrit", "corrplot", "DandEFA", "datamart", "data.table", "directlabels", "dismo", "dplyr", "factoextra", "FactoMineR", "fields", "fmsb", "gdata", "ggmap", "ggplot2", "ggthemes", "gpclib", "gridExtra", "Hmisc", "lubridate", "maps", "maptools", "ncdf", "ncdf4", "openair", "openxlsx", "plyr", "proj4", "psych", "psychTools", "raster", "RColorBrewer", "readxl", "reshape2", "rgdal", "rgeos", "rJava", "rstudioapi", "scales", "sf", "sp", "stargazer", "stringi", "stringr", "tibble", "tictoc", "tidyr", "tigris", "timeDate", "tmap", "units", "utils", "xlsx", "xtable", "zoo"),     repos = "http://cran.us.r-project.org")'    ;\
-    # IRkernel, assume Jupyter Notebook already installed
-		Rscript --quiet --no-readline --slave -e 'install.packages("IRkernel", repos = "http://cran.us.r-project.org")' ;\
-		# add kernel spec to Jupyter, depends on jupyter already installed
-		Rscript --no-readline --slave -e "IRkernel::installspec(user = FALSE)" ;\
-    # 
     Rscript --quiet --no-readline --slave -e 'library()'   | sort | tee R_library_list.out.4.txt  ;\
     ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.4.txt   ;\
     dpkg --list | tee dpkg--list.txt   ;\
@@ -246,7 +246,7 @@ RUN echo ''  ;\
 RUN  cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  \
-  && echo  "Dockerfile 2020.0907 jupyter"  >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2020.0907.2112 jupyter IRkernel"  >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Grand Finale"
 
 #- ENV TZ America/Los_Angeles  

@@ -26,7 +26,7 @@ From: tin6150/r4eta
 	touch "_ROOT_DIR_OF_CONTAINER_" ## also is "_CURRENT_DIR_CONTAINER_BUILD" 
 	date     >> _ROOT_DIR_OF_CONTAINER_
 	hostname >> _ROOT_DIR_OF_CONTAINER_
-	echo "Singularity def 2020.0907.0000 jupyter" >> _ROOT_DIR_OF_CONTAINER_
+	echo "Singularity def 2020.0907.2112 jupyter IRkernel" >> _ROOT_DIR_OF_CONTAINER_
 
 	# docker run as root, but singularity may run as user, so adding these hacks here
 	mkdir -p /global/scratch/tin
@@ -48,7 +48,7 @@ From: tin6150/r4eta
 	export TZ 
 
 %labels
-	BUILD = 2020_0907_0000_jupyter
+	BUILD = 2020_0907_2112_jupyter_IRkernel
 	MAINTAINER = tin_at_lbl_dot_gov
 	REFERENCES = "https://github.com/tin6150/r4eta"
 
@@ -57,6 +57,7 @@ From: tin6150/r4eta
 	R
 
 	
+## help is displayed by `singularity run-help ./myR`
 
 %help
 	R programming language env in a container, with many packages from CRAN

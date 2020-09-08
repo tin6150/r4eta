@@ -2,21 +2,27 @@ r4eta
 =====
 
 Container for R with libraries for LBNL Energy Technology Area project
+Now with Jupyter Notebook server
+
+Start jupyter notebook web server (on specific port, eg 5997):
+
+docker run -p 5997:5997 -v "$PWD":/mnt -it --entrypoint=/opt/conda/bin/jupyter  tin6150/r4eta lab --allow-root  --no-browser --port=5997 --ip=0.0.0.0
+
+Point web browser to the URL returned on the console
+eg http://hima.lbl.gov:5997/ 
+
+
+Repo info
+---------
 
 * source:          https://github.com/tin6150/r4eta
 * docker hub:      https://hub.docker.com/repository/docker/tin6150/r4eta
 * singularity hub: https://singularity-hub.org/collections/4160
 
 
-container sizes
-----
 
-myR has rstudio binary, but  w/o Qt: 1.7G in singularity
-myR with Qt Libs needed by rstudio:  1.9G in singularity
-docker last layer only:
-tin6150/r4eta            latest              dd66fe981035        43 hours ago        4.89GB
-in docker, largest layer about 1.7 GB?
-
+Text Terminal based run 
+========================
 
 Examples for using the singularity container
 --------------------------------------------
@@ -58,65 +64,8 @@ Alternate example for mapping only the current dir on host to /mnt on the contai
 	singularity exec --bind  .:/mnt  myR  /usr/bin/Rscript  /mnt/helloWorld.R > output.txt
 
 
+Additional singularity and docker container build and troubleshooting notes in DevNote.txt
 
-Docker build, run and troubleshoot example
-------------------------------------------
-
-	docker build -t tin6150/r4eta -f Dockerfile .  | tee Dockerfile.monolithic.log
-
-	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g) tin6150/r4eta
-	docker run  -it --entrypoint /usr/bin/Rscript -v $HOME:/tmp/home  --user=$(id -u):$(id -g) tin6150/r4eta -e 'capabilities()'
-	docker run  -it --entrypoint /bin/bash  --user=$(id -u):$(id -g) tin6150/r4eta
-	docker exec -it boring_home  bash
-
-
-rstudio Qt GUI via docker
--------------------------
-
-Singularity is actually a lot more straightforward in this regard (see above), since everything is run as a user process without uid change.  Docker needs to map a number of environments before a GUI can be run:
-
-  xhost +
-	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /tmp/.docker.xauth:/tmp/.xauth -v $HOME:/tmp/home  --entrypoint rstudio tin6150/r4eta
-
-need to run rstudio with root, so can't use the --user=$(id -u) cuz it needs to a web server...
-
-
-
-Troubleshooting if GUI doesn't lauch:
-  
-Instead of rstudio, can execute xterm or qterminal 
-as a lighter test to check whether X11 is working for the container.  
-The capabilities() function in R should report X11 as TRUE.
-Running `xhost +` on the host may help.
-Change :0 to whatever DISPLAY session you maybe using, or omit it altogether.
-
-  XSOCK=/tmp/.X11-unix && XAUTH=/tmp/.docker.xauth && xauth nlist :0 | sed -e "s/^..../ffff/" | xauth -f $XAUTH nmerge - && docker run  -v $XSOCK:$XSOCK -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH  -e DISPLAY=$DISPLAY --rm -it  tin6150/r4eta  R -e "capabilities()"
-
-should produce output like:
-
-> capabilities()
-     jpeg        png        tiff       tcltk         X11       aqua 
-     TRUE        TRUE        TRUE        TRUE        TRUE     FALSE 
-
-     http/ftp    sockets     libxml      fifo      cledit     iconv 
-     TRUE        TRUE        TRUE        TRUE       FALSE      TRUE 
-
-     NLS         profmem     cairo        ICU long.double   libcurl 
-     TRUE        TRUE        TRUE        TRUE        TRUE      TRUE 
-
-
-~~~~
-
-docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home                            -p 8787:8787 -e PASSWORD=yourpasswordhere   --entrypoint rstudio tin6150/r4eta  # rootless docker, actually need to run as root 
-
-docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g)  -p 8787:8787 -e PASSWORD=yourpasswordhere   --entrypoint rstudio tin6150/r4eta
-
-docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g) --entrypoint xterm tin6150/r4eta
-
-
-~~~~
-
-maybe rename repo to r4gis (but not r4ds, cuz like R wasn't going to be used for data science work?!)
-
+-Tin 2020.09.07
 
 # vim: nosmartindent tabstop=4 noexpandtab shiftwidth=4 paste
