@@ -72,9 +72,14 @@ RUN echo ''  ;\
     # pre-req for anaconda (jupyter notebook server)
     apt-get -y --quiet install apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor    1 libxcomposite1 libasound2 libxi6 libxtst6 ;\
     bash -x ./r4eta/install_jupyter.sh 2>&1   | tee install_jupyter.log ;\
+    cp ./r4eta/hello_world.R ./r4eta/hello_world_jupyter_R.ipynb / ;\
     # IRkernel, assume Jupyter Notebook already installed &&
     # add kernel spec to Jupyter, depends on jupyter already installed
-    source /etc/bashrc  && Rscript --quiet --no-readline --slave -e 'install.packages("IRkernel", repos = "http://cran.us.r-project.org")' && Rscript --no-readline --slave -e "IRkernel::installspec(user = FALSE)" && jupyter kernelspec list | tee -a install_jupyter_IRkernel.log ;\
+    ## this method didn't work source /etc/bashrc  && Rscript --quiet --no-readline --slave -e 'install.packages("IRkernel", repos = "http://cran.us.r-project.org")' && Rscript --no-readline --slave -e "IRkernel::installspec(user = FALSE)" && jupyter kernelspec list | tee -a install_jupyter_IRkernel.log ;\
+    ## trying next one, but maybe just better off invoke a shell script like done for r4envids
+    PATH="${PATH}:/opt/conda/bin" LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/opt/conda/lib" Rscript --quiet --no-readline --slave -e 'install.packages("IRkernel", repos = "http://cran.us.r-project.org")' | tee install_jupyter_IRkernel.log ;\
+    PATH="${PATH}:/opt/conda/bin" LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/opt/conda/lib" Rscript --quiet --no-readline --slave -e "IRkernel::installspec(user = FALSE)" | tee -a install_jupyter_IRkernel.log ;\
+    PATH="${PATH}:/opt/conda/bin" LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/opt/conda/lib" jupyter kernelspec list | tee -a install_jupyter_IRkernel.log ;\
     cd /    ;\
     echo ""  
 
@@ -244,7 +249,7 @@ RUN echo ''  ;\
 RUN  cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  \
-  && echo  "Dockerfile 2020.0907.2300 IRkernel"  >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2020.0908.1717 hello_world"  >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Grand Finale"
 
 #- ENV TZ America/Los_Angeles  
