@@ -13,6 +13,7 @@ Point web browser to something like
   http://hima.lbl.gov:5997/ 
 and paste the token URL link shown on the terminal console
 
+/mnt is a mount of the current dir (PWD) where you started the docker process, and files written there will persist after the container is terminated.  (Other files inside the container are ephemeral!)
 
 Repo info
 ---------
