@@ -27,6 +27,7 @@ From: tin6150/r4eta
 	date     >> _ROOT_DIR_OF_CONTAINER_
 	hostname >> _ROOT_DIR_OF_CONTAINER_
 	echo "Singularity def 2020.0908.1717 HelloWorld" >> _ROOT_DIR_OF_CONTAINER_
+	echo "Singularity def 2021.0829.0822 HelloWorld" >> _ROOT_DIR_OF_CONTAINER_
 
 	# docker run as root, but singularity may run as user, so adding these hacks here
 	mkdir -p /global/scratch/tin
@@ -48,7 +49,8 @@ From: tin6150/r4eta
 	export TZ 
 
 %labels
-	BUILD = 2020_0908_1717_helloWorld
+	#BUILD = 2020_0908_1717_helloWorld
+	BUILD = 2021_0829_0822_foreach_doSNOW
 	MAINTAINER = tin_at_lbl_dot_gov
 	REFERENCES = "https://github.com/tin6150/r4eta"
 

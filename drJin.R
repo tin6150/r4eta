@@ -1,3 +1,8 @@
+#!/usr/bin/env R
+
+print("Hello Word from R!")
+
+
 # ########## OPTIONAL: CONFIGURE WORKSPACE ##########
 
 # # set working directory to this script's locations
@@ -11,13 +16,12 @@
 #-----------------------------------------------------------------------------#
 
 ########### LOAD LIBRARIES ############
-packages <- c("raster", "sp", "rgeos", "geosphere", "doParallel", "iterators",
-              "foreach", "rgdal", "plyr", "doSNOW", "openxlsx")
+packages <- c("raster", "sp", "rgeos", "geosphere", "doParallel", "iterators", "foreach", "rgdal", "plyr", "doSNOW", "openxlsx")
 
 # install librarie that may not already be installed
-if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
-  install.packages(setdiff(packages, rownames(installed.packages())))
-}
+#? if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
+#?   install.packages(setdiff(packages, rownames(installed.packages())))
+#? }
 
 require(raster)
 require(sp)
@@ -32,12 +36,13 @@ require(doSNOW)
 require(openxlsx)
 
 ############ SOURCE CORE FUNCTIONS ############ 
-source("building_dynamics_functions.R")
+# source("building_dynamics_functions.R")
 
 ############ LOAD & CLEAN SUPPLEMENTARY DATA ############
 
 # set name of data file with sheets containing required tables and input data
-input.datafile <- "../supp_data/building_dynamics_supp_data.xlsx"
+##input.datafile <- "../supp_data/building_dynamics_supp_data.xlsx"
+input.datafile <- "/mnt/supp_data/building_dynamics_supp_data.xlsx"
 
 LoadSuppData(input.datafile)
 

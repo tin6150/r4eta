@@ -216,6 +216,8 @@ RUN echo ''  ;\
     echo ''  ;\
     # from library() calls
     Rscript --quiet --no-readline --slave -e 'install.packages(c("aCRM", "akima", "broom", "cluster", "clusterCrit", "corrplot", "DandEFA", "datamart", "data.table", "directlabels", "dismo", "dplyr", "factoextra", "FactoMineR", "fields", "fmsb", "gdata", "ggmap", "ggplot2", "ggthemes", "gpclib", "gridExtra", "Hmisc", "lubridate", "maps", "maptools", "ncdf", "ncdf4", "openair", "openxlsx", "plyr", "proj4", "psych", "psychTools", "raster", "RColorBrewer", "readxl", "reshape2", "rgdal", "rgeos", "rJava", "rstudioapi", "scales", "sf", "sp", "stargazer", "stringi", "stringr", "tibble", "tictoc", "tidyr", "tigris", "timeDate", "tmap", "units", "utils", "xlsx", "xtable", "zoo"),     repos = "http://cran.us.r-project.org")'    ;\
+    # next one added 2021.0829 for Ling's parallel foreach SNOW cluster 
+    Rscript --quiet --no-readline --slave -e 'install.packages(c( "ster", "sp", "rgeos", "geosphere", "doParallel", "iterators", "foreach", "rgdal", "plyr", "doSNOW", "openxlsx"),     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'library()'   | sort | tee R_library_list.out.4.txt  ;\
     ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.4.txt   ;\
     dpkg --list | tee dpkg--list.txt   ;\
@@ -255,6 +257,7 @@ RUN  cd / \
   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  \
   && echo  "Dockerfile 2020.0908.1717 hello_world"  >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Dockerfile 2020.0927.1025 ggpairs"      >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2021.0829.0822 foreach doSNOW"      >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Grand Finale"
 
 #- ENV TZ America/Los_Angeles  
