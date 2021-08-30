@@ -41,7 +41,7 @@ require(openxlsx)
 ############ LOAD & CLEAN SUPPLEMENTARY DATA ############
 
 # set name of data file with sheets containing required tables and input data
-##input.datafile <- "../supp_data/building_dynamics_supp_data.xlsx"
+##input.datafile <- "./supp_data/building_dynamics_supp_data.xlsx"
 input.datafile <- "/mnt/supp_data/building_dynamics_supp_data.xlsx"
 
 LoadSuppData(input.datafile)
@@ -68,7 +68,8 @@ output.metalist <-
           .packages = c("plyr", "rgdal", "sp", "raster",  "rgeos", "openxlsx"),
           .export = c(ls())) %dopar% {
             
-            try(ProcessCountyParcels(shapefile))
+            ##try(ProcessCountyParcels(shapefile))
+            try(print("processing sharefile"))
           }
 
 # cancel parallel backend

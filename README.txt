@@ -84,4 +84,4 @@ Additional singularity and docker container build and troubleshooting notes in D
 
 -Tin 2020.09.07
 
-# vim: nosmartindent tabstop=4 noexpandtab shiftwidth=4 paste
+.. vim: nosmartindent tabstop=4 noexpandtab shiftwidth=4 paste
