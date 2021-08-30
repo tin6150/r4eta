@@ -4,6 +4,19 @@ r4eta
 Container for R with libraries for LBNL Energy Technology Area project
 Now with Jupyter Notebook server
 
+
+Example running R script via Docker
+-----------------------------------
+
+docker run                -it --entrypoint=Rscript   tin6150/r4eta   /drJin.R       # R script inside the container
+docker run -v "$PWD":/mnt -it --entrypoint=Rscript   tin6150/r4eta   /mnt/drJin.R   # R script in home dir, bind mounted to container
+docker run                -it --entrypoint=bash      tin6150/r4eta                  # running a bash shell, can call R from there
+
+
+
+Start a web-based Jupyter notebook
+----------------------------------
+
 Start jupyter notebook web server (on specific port, eg 5997):
 
 docker run -p 5997:5997 -v "$PWD":/mnt -it --entrypoint=/opt/conda/bin/jupyter  tin6150/r4eta lab --allow-root  --no-browser --port=5997 --ip=0.0.0.0

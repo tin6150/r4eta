@@ -31,6 +31,14 @@ Docker build, run and troubleshoot example
 	docker exec -it boring_home  bash
 
 
+Example running R script via Docker
+-----------------------------------
+
+docker run                -it --entrypoint=Rscript   tin6150/r4eta   /drJin.R       # R script inside the container
+docker run -v "$PWD":/mnt -it --entrypoint=Rscript   tin6150/r4eta   /mnt/drJin.R   # R script in home dir, bind mounted to container
+docker run                -it --entrypoint=bash      tin6150/r4eta                  # running a bash shell, can call R from there
+
+
 rstudio Qt GUI via docker
 -------------------------
 
