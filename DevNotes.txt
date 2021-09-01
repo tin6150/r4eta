@@ -24,6 +24,7 @@ Docker build, run and troubleshoot example
 ------------------------------------------
 
 	docker build -t tin6150/r4eta -f Dockerfile .  | tee Dockerfile.monolithic.log
+	docker push     tin6150/r4eta
 
 	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g) tin6150/r4eta
 	docker run  -it --entrypoint /usr/bin/Rscript -v $HOME:/tmp/home  --user=$(id -u):$(id -g) tin6150/r4eta -e 'capabilities()'
@@ -31,12 +32,26 @@ Docker build, run and troubleshoot example
 	docker exec -it boring_home  bash
 
 
+Docker build in GitHub Container Registry
+-----------------------------------------
+
+	// 2021.0829 
+	// since hub.docker not longer do auto cloud build for free account.  
+	// changed to use github action to build and publish this container, 
+	// then manually push to hub.docker 
+
+	docker pull ghcr.io/tin6150/r4eta:master
+	docker tag cc50ee4598df tin6150/r4eta:v0829
+	docker push             tin6150/r4eta:v0829
+
+
 Example running R script via Docker
 -----------------------------------
 
-docker run                -it --entrypoint=Rscript   tin6150/r4eta   /drJin.R       # R script inside the container
-docker run -v "$PWD":/mnt -it --entrypoint=Rscript   tin6150/r4eta   /mnt/drJin.R   # R script in home dir, bind mounted to container
-docker run                -it --entrypoint=bash      tin6150/r4eta                  # running a bash shell, can call R from there
+docker run                -it --entrypoint=Rscript   ghcr.io/tin6150/r4eta:master   /opt/gitrepo/r4eta/drJin.R       # R script inside the container
+docker run -v "$PWD":/mnt -it --entrypoint=Rscript   ghcr.io/tin6150/r4eta:master   /mnt/drJin.R   # R script in home dir, bind mounted to container
+docker run                -it --entrypoint=bash      ghcr.io/tin6150/r4eta:master   # running a bash shell, can call R from there
+docker run                -it --entrypoint=bash      tin6150/r4eta:v0829            # version manually pushed to hub.docker
 
 
 rstudio Qt GUI via docker

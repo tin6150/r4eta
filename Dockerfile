@@ -12,7 +12,8 @@ FROM r-base:3.6.3
 MAINTAINER Tin (at) LBL.gov
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG TERM=vt100
+#ARG TERM=vt100
+ARG TERM=dumb
 ARG TZ=PST8PDT 
 
 #ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/conda/bin
@@ -22,11 +23,17 @@ RUN echo  ''  ;\
     echo "begining docker build process at " | tee -a _TOP_DIR_OF_CONTAINER_  ;\
     date | tee -a       _TOP_DIR_OF_CONTAINER_ ;\
     echo "installing packages via apt"       | tee -a _TOP_DIR_OF_CONTAINER_  ;\
+    export TERM=dumb  ;\
     apt-get update ;\
     # ubuntu:   # procps provides uptime cmd
     apt-get -y --quiet install git file wget gzip bash tcsh zsh less vim bc tmux screen xterm procps ;\
-    apt-get -y --quiet install netcdf-bin libnetcdf-c++4 libnetcdf-c++4-1 libnetcdf-c++4-dev libnetcdf-dev cdftools nco ncview r-cran-ncdf4  units libudunits2-dev gdal-bin gdal-data libgdal-dev libgdal26  r-cran-rgdal  curl r-cran-rcurl libcurl4 libcurl4-openssl-dev libssl-dev r-cran-httr libgeos-dev r-cran-xml r-cran-xml2 libxml2 rio  java-common javacc javacc4  openjdk-8-jre-headless  ;\
+    apt-get -y --quiet install netcdf-bin libnetcdf-c++4 libnetcdf-c++4-1 libnetcdf-c++4-dev libnetcdf-dev cdftools nco ncview r-cran-ncdf4  units libudunits2-dev curl r-cran-rcurl libcurl4 libcurl4-openssl-dev libssl-dev r-cran-httr  r-cran-xml r-cran-xml2 libxml2 rio  java-common javacc javacc4  openjdk-8-jre-headless ;\
     apt-get -y --quiet install openjdk-14-jre-headless   ;\ 
+    # gdal cran install fails, cuz no longer libgdal26, but now libgdal28
+    # apt-file search gdal-config
+    apt-get -y --quiet install gdal-bin gdal-data libgdal-dev  libgdal28  ;\
+    apt-get -y --quiet install r-cran-rgdal  ;\
+    apt-get -y --quiet install libgeos-dev   ;\
     # default-jdk is what provide javac !   # -version = 11.0.6
     # ref: https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-18-04
     # update-alternatives --config java --skip-auto # not needed, but could run interactively to change jdk
@@ -69,6 +76,7 @@ RUN echo ''  ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
     echo '' ;\
+    export TERM=dumb  ;\
     # pre-req for anaconda (jupyter notebook server)
     apt-get -y --quiet install apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor    1 libxcomposite1 libasound2 libxi6 libxtst6 ;\
     bash -x ./r4eta/install_jupyter.sh 2>&1   | tee install_jupyter.log ;\
@@ -94,6 +102,7 @@ RUN echo ''  ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
     echo '' ;\
+    export TERM=dumb  ;\
     # initialization1.R
     Rscript --quiet --no-readline --slave -e 'install.packages("ggplot2",    repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("maps",    repos = "http://cran.us.r-project.org")'    ;\
@@ -111,7 +120,6 @@ RUN echo ''  ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("shapefiles",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("tmap",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("spdplyr",     repos = "http://cran.us.r-project.org")'    ;\
-    Rscript --quiet --no-readline --slave -e 'install.packages("rgdal",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'library()'   | sort | tee R_library_list.out.1.txt  ;\
     ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.1.txt   ;\
     echo "Done installing packages cran packages - part 1" | tee -a _TOP_DIR_OF_CONTAINER_     ;\
@@ -128,6 +136,7 @@ RUN echo ''  ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
     echo '' ;\
+    export TERM=dumb  ;\
     # initialization2.R
     Rscript --quiet --no-readline --slave -e 'install.packages("MASS",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("reshape2",     repos = "http://cran.us.r-project.org")'    ;\
@@ -166,6 +175,7 @@ RUN echo ''  ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
     echo ''  ;\
+    export TERM=dumb  ;\
     # initialization3.R
     Rscript --quiet --no-readline --slave -e 'install.packages("RSQLite",     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'install.packages("rgeos",     repos = "http://cran.us.r-project.org")'    ;\
@@ -214,10 +224,11 @@ RUN echo ''  ;\
     echo '==================================================================' ;\
     echo '==================================================================' ;\
     echo ''  ;\
+    export TERM=dumb  ;\
     # from library() calls
-    Rscript --quiet --no-readline --slave -e 'install.packages(c("aCRM", "akima", "broom", "cluster", "clusterCrit", "corrplot", "DandEFA", "datamart", "data.table", "directlabels", "dismo", "dplyr", "factoextra", "FactoMineR", "fields", "fmsb", "gdata", "ggmap", "ggplot2", "ggthemes", "gpclib", "gridExtra", "Hmisc", "lubridate", "maps", "maptools", "ncdf", "ncdf4", "openair", "openxlsx", "plyr", "proj4", "psych", "psychTools", "raster", "RColorBrewer", "readxl", "reshape2", "rgdal", "rgeos", "rJava", "rstudioapi", "scales", "sf", "sp", "stargazer", "stringi", "stringr", "tibble", "tictoc", "tidyr", "tigris", "timeDate", "tmap", "units", "utils", "xlsx", "xtable", "zoo"),     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages(c("aCRM", "akima", "broom", "cluster", "clusterCrit", "corrplot", "DandEFA", "datamart", "data.table", "directlabels", "dismo", "dplyr", "factoextra", "FactoMineR", "fields", "fmsb", "gdata", "ggmap", "ggplot2", "ggthemes", "gpclib", "gridExtra", "Hmisc", "lubridate", "maps", "maptools", "ncdf", "ncdf4", "openair", "openxlsx", "proj4", "psych", "psychTools", "raster", "RColorBrewer", "readxl", "reshape2", "rgdal", "rgeos", "rJava", "rstudioapi", "scales", "sf", "sp", "stargazer", "stringi", "stringr", "tibble", "tictoc", "tidyr", "tigris", "timeDate", "tmap", "units", "utils", "xlsx", "xtable", "zoo"),     repos = "http://cran.us.r-project.org")'    ;\
     # next one added 2021.0829 for Ling's parallel foreach SNOW cluster 
-    Rscript --quiet --no-readline --slave -e 'install.packages(c( "ster", "sp", "rgeos", "geosphere", "doParallel", "iterators", "foreach", "rgdal", "plyr", "doSNOW", "openxlsx"),     repos = "http://cran.us.r-project.org")'    ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages(c( "ster", "sp", "rgeos", "geosphere", "doParallel", "iterators", "foreach", "rgdal", "doSNOW", "openxlsx"),     repos = "http://cran.us.r-project.org")'    ;\
     Rscript --quiet --no-readline --slave -e 'library()'   | sort | tee R_library_list.out.4.txt  ;\
     ls /usr/local/lib/R/site-library | sort | tee R-site-lib-ls.out.4.txt   ;\
     dpkg --list | tee dpkg--list.txt   ;\
@@ -231,6 +242,7 @@ RUN echo ''  ;\
     date | tee -a      _TOP_DIR_OF_CONTAINER_                        ;\
     echo '==================================================================' ;\
     echo ''  ;\
+    export TERM=dumb  ;\
 		## additions by Tin
     Rscript --quiet --no-readline --slave -e 'install.packages("tidycensus",     repos = "http://cran.us.r-project.org")'    ;\
     #Rscript --quiet --no-readline --slave -e 'install.packages("pacman" )'       # provides wrapper function like p_load() to install package if needed, then load the library // R 3.5+, but not yet in R 4.0? ;\
@@ -248,6 +260,7 @@ RUN echo ''  ;\
     date | tee -a      _TOP_DIR_OF_CONTAINER_                        ;\
     echo '==================================================================' ;\
     echo ''  ;\
+    export TERM=dumb  ;\
     apt-get install -y --quiet xfe ;\
     date | tee -a      _TOP_DIR_OF_CONTAINER_   ;\
     echo ""
@@ -255,9 +268,9 @@ RUN echo ''  ;\
 RUN  cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  \
-  && echo  "Dockerfile 2020.0908.1717 hello_world"  >> _TOP_DIR_OF_CONTAINER_   \
-  && echo  "Dockerfile 2020.0927.1025 ggpairs"      >> _TOP_DIR_OF_CONTAINER_   \
-  && echo  "Dockerfile 2021.0829.0822 foreach doSNOW"      >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2020.0908.1717 hello_world"        >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2020.0927.1025 ggpairs"            >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2021.0831.1814 foreach doSNOW"     >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Grand Finale"
 
 #- ENV TZ America/Los_Angeles  

@@ -8,9 +8,14 @@ Now with Jupyter Notebook server
 Example running R script via Docker
 -----------------------------------
 
-docker run                -it --entrypoint=Rscript   tin6150/r4eta   /drJin.R       # R script inside the container
-docker run -v "$PWD":/mnt -it --entrypoint=Rscript   tin6150/r4eta   /mnt/drJin.R   # R script in home dir, bind mounted to container
-docker run                -it --entrypoint=bash      tin6150/r4eta                  # running a bash shell, can call R from there
+# R script inside the container
+docker run                -it --entrypoint=Rscript  ghcr.io/tin6150/r4eta:master  /opt/gitrepo/r4eta/drJin.R  
+
+# R script in home dir, bind mounted to container
+docker run -v "$PWD":/mnt -it --entrypoint=Rscript  ghcr.io/tin6150/r4eta:master  /mnt/drJin.R                
+
+# running a bash shell, can call R from there
+docker run                -it --entrypoint=bash     ghcr.io/tin6150/r4eta:master  
 
 
 
@@ -31,9 +36,10 @@ and paste the token URL link shown on the terminal console
 Repo info
 ---------
 
-* source:          https://github.com/tin6150/r4eta
-* docker hub:      https://hub.docker.com/repository/docker/tin6150/r4eta
-* singularity hub: https://singularity-hub.org/collections/4160
+* source:            https://github.com/tin6150/r4eta
+* github container:  https://ghcr.io/tin6150/r4eta
+* docker hub:        https://hub.docker.com/repository/docker/tin6150/r4eta  # aged
+* singularity hub:   https://singularity-hub.org/collections/4160            # aged
 
 
 

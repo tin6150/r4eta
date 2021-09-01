@@ -18,10 +18,10 @@ print("Hello Word from R!")
 ########### LOAD LIBRARIES ############
 packages <- c("raster", "sp", "rgeos", "geosphere", "doParallel", "iterators", "foreach", "rgdal", "plyr", "doSNOW", "openxlsx")
 
-# install librarie that may not already be installed
-#? if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
-#?   install.packages(setdiff(packages, rownames(installed.packages())))
-#? }
+## install librarie that may not already be installed
+##? if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
+##?   install.packages(setdiff(packages, rownames(installed.packages())))
+##? }
 
 require(raster)
 require(sp)
@@ -44,18 +44,19 @@ require(openxlsx)
 ##input.datafile <- "./supp_data/building_dynamics_supp_data.xlsx"
 input.datafile <- "/mnt/supp_data/building_dynamics_supp_data.xlsx"
 
-LoadSuppData(input.datafile)
+##// LoadSuppData(input.datafile)
 
 ########## INITIALIZE SPREADSHEET FOR SUMMARY OUTPUTS ##########
 
-output.filename <-  "subtype_summary_tables"
-output.filepath <- CreateOutputWorkbook(output.filename)
+##//output.filename <- "subtype_summary_tables"
+##// output.filepath <- CreateOutputWorkbook(output.filename)
 
 ############ LOAD & PROCESS INPUT SHAPEFILES IN PARALLEL ############
 
 # set up processing que from shapefiles in input_shapefiles dir
 dir.files <- list.files("../input_shapefiles/")
-in.shapes <- dir.files[CheckExt(dir.files)]
+##//in.shapes <- dir.files[CheckExt(dir.files)]
+in.shapes <- dir.files[      (dir.files)]
 
 # initialize parallel backend
 no.cores <- (detectCores() - 1)
@@ -76,5 +77,5 @@ output.metalist <-
 stopCluster(cl)
 
 # write output to excel spreadsheet
-ExportSummaryTables(output.metalist, output.filename, output.filepath)
+##// ExportSummaryTables(output.metalist, output.filename, output.filepath)
 
