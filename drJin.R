@@ -1,6 +1,6 @@
 #!/usr/bin/env R
 
-print("Hello Word from R!")
+print("Hello World from R! (ref:0906)")
 
 
 # ########## OPTIONAL: CONFIGURE WORKSPACE ##########
@@ -79,3 +79,4 @@ stopCluster(cl)
 # write output to excel spreadsheet
 ##// ExportSummaryTables(output.metalist, output.filename, output.filepath)
 
+print("Goodbye World from R! (ref:0906)")

@@ -18,6 +18,16 @@ docker run -v "$PWD":/mnt -it --entrypoint=Rscript  ghcr.io/tin6150/r4eta:master
 docker run                -it --entrypoint=bash     ghcr.io/tin6150/r4eta:master  
 
 
+Example running R script via Singularity
+----------------------------------------
+
+singularity pull  docker://ghcr.io/tin6150/r4eta:master  
+singularity shell docker://ghcr.io/tin6150/r4eta:master  # get bash prompt 
+singularity run   docker://ghcr.io/tin6150/r4eta:master  # get R    prompt
+singularity exec  docker://ghcr.io/tin6150/r4eta:master  Rscript ./drJin.R                    # R script in current working dir
+singularity exec  docker://ghcr.io/tin6150/r4eta:master  Rscript /opt/gitrepo/r4eta/drJin.R   # R script inside container
+
+
 
 Start a web-based Jupyter notebook
 ----------------------------------

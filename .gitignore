@@ -37,4 +37,10 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
-myR
+
+# Tin's list
+myR*
+*.sif
+*.out*
+.*_checkpoints/
+LOG

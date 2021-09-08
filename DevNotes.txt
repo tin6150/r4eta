@@ -25,6 +25,7 @@ Docker build, run and troubleshoot example
 
 	docker build -t tin6150/r4eta -f Dockerfile .  | tee Dockerfile.monolithic.log
 	docker push     tin6150/r4eta
+	docker run  -it --entrypoint=bash   tin6150/r4eta
 
 	docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g) tin6150/r4eta
 	docker run  -it --entrypoint /usr/bin/Rscript -v $HOME:/tmp/home  --user=$(id -u):$(id -g) tin6150/r4eta -e 'capabilities()'
@@ -41,9 +42,10 @@ Docker build in GitHub Container Registry
 	// then manually push to hub.docker 
 
 	docker pull ghcr.io/tin6150/r4eta:master
-	docker tag cc50ee4598df tin6150/r4eta:v0829
-	docker push             tin6150/r4eta:v0829
-
+	docker tag cc50ee4598df tin6150/r4eta:v0829  
+	docker push             tin6150/r4eta:v0829  # R 3.6.3 # build on 2021.0829
+	docker tag 19848752d40d tin6150/r4eta:v411   
+	docker push             tin6150/r4eta:v411   # R 4.1.1 # build on 2021.0831
 
 Example running R script via Docker
 -----------------------------------
@@ -52,6 +54,15 @@ docker run                -it --entrypoint=Rscript   ghcr.io/tin6150/r4eta:maste
 docker run -v "$PWD":/mnt -it --entrypoint=Rscript   ghcr.io/tin6150/r4eta:master   /mnt/drJin.R   # R script in home dir, bind mounted to container
 docker run                -it --entrypoint=bash      ghcr.io/tin6150/r4eta:master   # running a bash shell, can call R from there
 docker run                -it --entrypoint=bash      tin6150/r4eta:v0829            # version manually pushed to hub.docker
+
+Example running R script via Singularity
+----------------------------------------
+
+	singularity pull  docker://ghcr.io/tin6150/r4eta:master
+	singularity shell docker://ghcr.io/tin6150/r4eta:master  # get bash prompt
+	singularity run   docker://ghcr.io/tin6150/r4eta:master  # get R    prompt
+	singularity exec  docker://ghcr.io/tin6150/r4eta:master  Rscript ./drJin.R                    # R script in current working dir
+	singularity exec  docker://ghcr.io/tin6150/r4eta:master  Rscript /opt/gitrepo/r4eta/drJin.R   # R script inside container
 
 
 rstudio Qt GUI via docker
