@@ -65,6 +65,24 @@ Example running R script via Singularity
 	singularity exec  docker://ghcr.io/tin6150/r4eta:master  Rscript /opt/gitrepo/r4eta/drJin.R   # R script inside container
 
 
+convert jupyter notebook to .py
+-------------------------------
+
+essentially, need to run:
+jupyter nbconvert --to script /global/data/transportation/ATLAS/static/urbansim_hima_apollo/data_clean/data\ clean.ipynb
+
+cd  /global/data/transportation/ATLAS/static/urbansim_hima_apollo/data_clean/
+docker run -it --entrypoint=/opt/conda/bin/jupyter  -v `pwd`:/mnt tin6150/r4envids nbconvert --to script /mnt/data_clean.ipynb
+
+-or-
+
+docker run -it --entrypoint=bash  -v `pwd`:/mnt tin6150/r4envids 
+  cd /mnt 
+  /opt/conda/bin/jupyter/nbconvert --to script data_clean.ipynb
+
+
+
+
 rstudio Qt GUI via docker
 -------------------------
 
