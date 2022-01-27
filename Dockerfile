@@ -10,7 +10,8 @@
 #FROM r-base:3.6.2
 #FROM r-base:3.6.3
 # r-base:3.6.3 was last of 3.x, ca 2019
-FROM r-base:4.1.1
+# FROM r-base:4.1.1    # confirmed buggy when run on ubuntu host when build by ghcr (see atlas)
+FROM r-base:4.1.2
 # r-base:4.1.1  # ca 2021.0815
 MAINTAINER Tin (at) LBL.gov
 

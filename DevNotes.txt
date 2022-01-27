@@ -127,9 +127,33 @@ docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/t
 docker run  -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:/tmp/home  --user=$(id -u):$(id -g) --entrypoint xterm tin6150/r4eta
 
 
+
+~~~~
+
+
+Strange Ubuntu compatibility problem - 2022.0127
+
+first noticed with atlas container.
+updated this repo with a github workflow with a new branch "ghcr-r-test", 
+let github action build the container
+and surely enough, it doesn't work in Ubuntu instance in AWS. (or likely Mint workstation)
+eg:
+
+(pilates) ubuntu@ip-172-31-12-107:~$ docker run -it --entrypoint=bash  ghcr.io/tin6150/r4eta:ghcr-r-test
+root@1eebdf8a6a98:/# R
+ERROR: R_HOME ('/usr/lib/R') not found
+root@1eebdf8a6a98:/#
+
+not sure what github is doing to the image.
+Both images were using r-base:4.1.1
+
+will try r-base:4.1.2 next
+
 ~~~~
 
 maybe rename repo to r4gis (but not r4ds, cuz like R wasn't going to be used for data science work?!)
+
+
 
 
 # vim: nosmartindent tabstop=4 noexpandtab shiftwidth=4 paste
