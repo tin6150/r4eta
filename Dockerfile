@@ -270,10 +270,12 @@ RUN echo ''  ;\
 
 RUN  cd / \
   && touch _TOP_DIR_OF_CONTAINER_  \
+  && touch _TOP_DIR_OF_CONTAINER_r4eta_  \
   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  \
   && echo  "Dockerfile 2020.0908.1717 hello_world"        >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Dockerfile 2020.0927.1025 ggpairs"            >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Dockerfile 2021.0831.1814 foreach doSNOW"     >> _TOP_DIR_OF_CONTAINER_   \
+  && echo  "Dockerfile 2022.0127 ghcr-r-home-test no code change"     >> _TOP_DIR_OF_CONTAINER_   \
   && echo  "Grand Finale"
 
 #- ENV TZ America/Los_Angeles  
