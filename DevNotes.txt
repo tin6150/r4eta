@@ -148,6 +148,10 @@ not sure what github is doing to the image.
 Both images were using r-base:4.1.1
 
 will try r-base:4.1.2 next
+  docker run -it --entrypoint=bash  ghcr.io/tin6150/r4eta:ghcr-r-test
+  still the same problem for Ubuntu/Mint :-\
+  https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+  list other runs-on env, but other than ubuntu, it is windows-2022, macos-11, and their versions.  no centos or alpine
 
 ~~~~
 

@@ -1,8 +1,10 @@
 name: Docker Image CI
+## this one doesn't publish to any registry
+## thus the docker-publish.yml is more useful.
 
 on:
   push:
-    branches: [ master ]
+    branches: [ disabled--master ]
   pull_request:
     branches: [ master ]
 
