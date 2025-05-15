@@ -23,3 +23,14 @@ conda install -q -y -c conda-forge jupyterlab
 echo $?
 TZ="America/Los_Angeles" date
 
+
+
+#### https://stackoverflow.com/questions/57870575/install-and-run-r-kernel-for-jupyter-notebook
+#### added 2023-02-16, untested inside container
+#### instead of adding IRkernel in R
+#### said can use conda
+conda config --add channels r
+conda install --yes r-irkernel
+####  config on wombat wsl... R kernel avail, but can't run things, get error.  
+####  didn't troubleshoot, Rstudio is lot less friction
+
